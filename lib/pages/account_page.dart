@@ -62,8 +62,8 @@ class _AccountPageState extends State<AccountPage> {
                 const SizedBox(height: 10),
 
                 Divider(color: Colors.grey.shade300),
-                ListTile(
-                  title: const Text(
+                const ListTile(
+                  title: Text(
                     'Name',
                     style: TextStyle(
                       color: Color(0xFF202325),
@@ -74,7 +74,7 @@ class _AccountPageState extends State<AccountPage> {
                   ),
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
-                    children: const [
+                    children: [
                       Text(
                         'Stefani Warren',
                         style: TextStyle(
@@ -91,8 +91,8 @@ class _AccountPageState extends State<AccountPage> {
                 ),
                 Divider(color: Colors.grey.shade300),
 
-                ListTile(
-                  title: const Text(
+                const ListTile(
+                  title: Text(
                     'Gender',
                     style: TextStyle(
                       color: Color(0xFF202325),
@@ -103,7 +103,7 @@ class _AccountPageState extends State<AccountPage> {
                   ),
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
-                    children: const [
+                    children: [
                       Text(
                         'Female',
                         style: TextStyle(
@@ -120,8 +120,8 @@ class _AccountPageState extends State<AccountPage> {
                 ),
                 Divider(color: Colors.grey.shade300),
 
-                ListTile(
-                  title: const Text(
+                const ListTile(
+                  title: Text(
                     'Age',
                     style: TextStyle(
                       color: Color(0xFF202325),
@@ -132,7 +132,7 @@ class _AccountPageState extends State<AccountPage> {
                   ),
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
-                    children: const [
+                    children: [
                       Text(
                         '27',
                         style: TextStyle(
@@ -149,8 +149,8 @@ class _AccountPageState extends State<AccountPage> {
                 ),
                 Divider(color: Colors.grey.shade300),
 
-                ListTile(
-                  title: const Text(
+                const ListTile(
+                  title: Text(
                     'Height',
                     style: TextStyle(
                       color: Color(0xFF202325),
@@ -161,7 +161,7 @@ class _AccountPageState extends State<AccountPage> {
                   ),
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
-                    children: const [
+                    children: [
                       Text(
                         '173 cm',
                         style: TextStyle(
@@ -178,8 +178,8 @@ class _AccountPageState extends State<AccountPage> {
                 ),
                 Divider(color: Colors.grey.shade300),
 
-                ListTile(
-                  title: const Text(
+                const ListTile(
+                  title: Text(
                     'Weight',
                     style: TextStyle(
                       color: Color(0xFF202325),
@@ -190,7 +190,7 @@ class _AccountPageState extends State<AccountPage> {
                   ),
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
-                    children: const [
+                    children: [
                       Text(
                         '53 kg',
                         style: TextStyle(

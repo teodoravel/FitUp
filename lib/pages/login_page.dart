@@ -147,9 +147,9 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       onPressed: _onLoginPressed,
-                      child: Row(
+                      child: const Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
+                        children: [
                           Icon(Icons.login, color: Colors.white),
                           SizedBox(width: 10),
                           Text(
@@ -176,7 +176,8 @@ class _LoginPageState extends State<LoginPage> {
                     width: 50,
                     height: 50,
                     decoration: BoxDecoration(
-                      border: Border.all(width: 0.8, color: Color(0xFFDDD9DA)),
+                      border: Border.all(
+                          width: 0.8, color: const Color(0xFFDDD9DA)),
                       borderRadius: BorderRadius.circular(14),
                     ),
                     child: const Icon(Icons.g_mobiledata, size: 32),
