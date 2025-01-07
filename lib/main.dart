@@ -1,3 +1,5 @@
+import 'package:fitup/pages/inroduction_page.dart';
+import 'package:fitup/pages/start_page.dart';
 import 'package:flutter/material.dart';
 import 'pages/register_page1.dart';
 import 'pages/register_page2.dart';
@@ -28,8 +30,10 @@ class FitUpApp extends StatelessWidget {
         primarySwatch: Colors.purple,
       ),
       // whichever initial screen you prefer
-      home: const RegisterPage1(),
+      home: const Introduction(),
       routes: {
+        '/start': (context) => const StartPage(),
+        '/introduction': (context) => const Introduction(),
         '/register1': (context) => const RegisterPage1(),
         '/register2': (context) => const RegisterPage2(),
         '/login': (context) => const LoginPage(),
