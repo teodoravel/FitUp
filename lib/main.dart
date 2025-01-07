@@ -1,5 +1,7 @@
+import 'package:fitup/pages/gyms/gym_list_page.dart';
 import 'package:fitup/pages/inroduction_page.dart';
 import 'package:fitup/pages/start_page.dart';
+import 'package:fitup/pages/workout_tracker/workout_tracker_outdoor.dart';
 import 'package:flutter/material.dart';
 import 'pages/register_page1.dart';
 import 'pages/register_page2.dart';
@@ -10,9 +12,8 @@ import 'pages/profile_page.dart';
 import 'pages/account_page.dart';
 
 // Import your new tracker pages:
-import 'pages/workout_tracker_indoor.dart';
-import 'pages/workout_tracker_outdoor.dart';
-import 'pages/workout_tracker_favorite.dart';
+import 'pages/workout_tracker/workout_tracker_indoor.dart';
+import 'pages/workout_tracker/workout_tracker_favorite.dart';
 
 void main() {
   runApp(const FitUpApp());
@@ -30,7 +31,7 @@ class FitUpApp extends StatelessWidget {
         primarySwatch: Colors.purple,
       ),
       // whichever initial screen you prefer
-      home: const Introduction(),
+      home: const GymListPage(),
       routes: {
         '/start': (context) => const StartPage(),
         '/introduction': (context) => const Introduction(),
@@ -46,6 +47,8 @@ class FitUpApp extends StatelessWidget {
         '/workoutIndoor': (context) => const WorkoutTrackerIndoorPage(),
         '/workoutOutdoor': (context) => const WorkoutTrackerOutdoorPage(),
         '/workoutFavorite': (context) => const WorkoutTrackerFavoritePage(),
+
+        '/gyms': (context) => const GymListPage()
       },
     );
   }

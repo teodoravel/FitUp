@@ -65,7 +65,7 @@ class HomePage extends StatelessWidget {
               icon: Icons.location_city,
               label: 'Gyms',
               onTap: () {
-                // Placeholder
+                Navigator.pushNamed(context, '/gyms');
               },
             ),
             _NavIconLabel(
