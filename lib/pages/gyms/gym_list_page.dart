@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../custom_card.dart';
+import '../../widgets/custom_card.dart';
 
 class GymListPage extends StatelessWidget {
   const GymListPage({super.key});
