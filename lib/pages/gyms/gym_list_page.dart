@@ -1,6 +1,5 @@
-import 'package:flutter/cupertino.dart';
+// gym_list_page.dart
 import 'package:flutter/material.dart';
-
 import '../../custom_card.dart';
 
 class GymListPage extends StatelessWidget {
@@ -15,8 +14,7 @@ class GymListPage extends StatelessWidget {
           children: [
             // 1) Purple top area
             Container(
-              padding: const EdgeInsets.only(
-                  left: 30, right: 30, top: 40, bottom: 20),
+              padding: const EdgeInsets.only(left: 30, right: 30, top: 40, bottom: 20),
               decoration: const BoxDecoration(
                 color: Color(0xB65C315B),
                 borderRadius: BorderRadius.only(
@@ -34,12 +32,10 @@ class GymListPage extends StatelessWidget {
                       color: const Color(0xFFF7F8F8),
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    // Now an IconButton for the back arrow:
                     child: IconButton(
                       icon: const Icon(Icons.arrow_back_ios, size: 16),
                       color: Colors.black,
-                      onPressed: () =>
-                          Navigator.pop(context), // pop to previous page
+                      onPressed: () => Navigator.pop(context),
                     ),
                   ),
                   const SizedBox(width: 16),
@@ -73,13 +69,9 @@ class GymListPage extends StatelessWidget {
                       children: [
                         _titleSeeMoreRow('Gyms near you'),
                         const SizedBox(height: 10),
-                        _upcomingCard(
-                            title: 'Gym 1',
-                            subtitle: ''),
+                        _upcomingCard(title: 'Your gym', subtitle: ''),
                         const SizedBox(height: 16),
-                        _upcomingCard(
-                            title: 'Gym 2',
-                            subtitle: ''),
+                        _upcomingCard(title: 'Local gym', subtitle: ''),
                       ],
                     ),
                   ),
@@ -91,50 +83,35 @@ class GymListPage extends StatelessWidget {
                       children: [
                         const SizedBox(height: 16),
                         _titleSeeMoreRow('All gyms'),
+                        const SizedBox(height: 10),
                         // The custom workout cards
-                        CustomCard(
+                        _customCard(
+                          context,
                           title: 'Gym 1',
                           subtitle: 'Location',
                           buttonText: 'See on map',
-                          imagePath: 'assets/Saly-34.png', // Path to your image
                           onButtonPressed: () {
-                            // Handle button navigation
-                            /*Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => GymDetailsPage(gymId: 1),
-                              ),
-                            );*/
+                            Navigator.pushNamed(context, '/gymMap');
                           },
                         ),
                         const SizedBox(height: 20),
-                        CustomCard(
+                        _customCard(
+                          context,
                           title: 'Gym 2',
                           subtitle: 'Location',
                           buttonText: 'See on map',
-                          imagePath: 'assets/Saly-34.png', // Path to your image
                           onButtonPressed: () {
-                            /*Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => GymDetailsPage(gymId: 2),
-                              ),
-                            );*/
+                            Navigator.pushNamed(context, '/gymMap');
                           },
                         ),
                         const SizedBox(height: 20),
-                        CustomCard(
+                        _customCard(
+                          context,
                           title: 'Gym 3',
                           subtitle: 'Location',
                           buttonText: 'See on map',
-                          imagePath: 'assets/Saly-34.png', // Path to your image
                           onButtonPressed: () {
-                            /*Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => GymDetailsPage(gymId: 3),
-                              ),
-                            );*/
+                            Navigator.pushNamed(context, '/gymMap');
                           },
                         ),
                       ],
@@ -146,53 +123,28 @@ class GymListPage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const SizedBox(height: 16),
-                        _titleSeeMoreRow('Trainers'),
-                        // The custom workout cards for trainers
-                        CustomCard(
+                        _titleSeeMoreRow('Personal Trainers'),
+                        const SizedBox(height: 10),
+                        _customCard(
+                          context,
                           title: 'Trainer 1',
-                          subtitle: 'Rating: 4.5',
-                          buttonText: 'View Profile',
-                          imagePath: 'assets/Saly-34.png', // Path to your image
+                          subtitle: '4.5 K',
+                          buttonText: 'Contact',
                           onButtonPressed: () {
-                            // Handle button navigation
-                            /*Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => TrainerDetailsPage(trainerId: 1),
-                              ),
-                            );*/
+                            Navigator.pushNamed(context, '/trainerDetails');
                           },
                         ),
                         const SizedBox(height: 20),
-                        CustomCard(
+                        _customCard(
+                          context,
                           title: 'Trainer 2',
-                          subtitle: 'Rating: 4.0',
-                          buttonText: 'View Profile',
-                          imagePath: 'assets/Saly-34.png', // Path to your image
+                          subtitle: '4.5 K',
+                          buttonText: 'Contact',
                           onButtonPressed: () {
-                            /*Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => TrainerDetailsPage(trainerId: 2),
-                              ),
-                            );*/
+                            Navigator.pushNamed(context, '/trainerDetails');
                           },
                         ),
                         const SizedBox(height: 20),
-                        CustomCard(
-                          title: 'Trainer 3',
-                          subtitle: 'Rating: 4.8',
-                          buttonText: 'View Profile',
-                          imagePath: 'assets/Saly-34.png', // Path to your image
-                          onButtonPressed: () {
-                            /*Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => TrainerDetailsPage(trainerId: 3),
-                              ),
-                            );*/
-                          },
-                        ),
                       ],
                     ),
                   ),
@@ -205,7 +157,6 @@ class GymListPage extends StatelessWidget {
     );
   }
 
-  // "Upcoming Workouts" + "See more"
   Widget _titleSeeMoreRow(String title) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -234,23 +185,22 @@ class GymListPage extends StatelessWidget {
     );
   }
 
-  // A small "upcoming" card
   Widget _upcomingCard({required String title, required String subtitle}) {
     return Container(
-      width: double.infinity,
-      height: 80,
-      decoration: BoxDecoration(
+        width: double.infinity,
+        height: 80,
+        decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: const [
-          BoxShadow(
-            color: Color(0x111D1617),
-            blurRadius: 40,
-            offset: Offset(0, 10),
-            spreadRadius: 0,
-          )
-        ],
-      ),
+          boxShadow: const [
+            BoxShadow(
+              color: Color(0x111D1617),
+              blurRadius: 40,
+              offset: Offset(0, 10),
+              spreadRadius: 0,
+            )
+          ],
+        ),
       child: Row(
         children: [
           const SizedBox(width: 15),
@@ -292,6 +242,102 @@ class GymListPage extends StatelessWidget {
                 ),
               ),
             ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Replacing "CustomCard" usage with direct code or you can still import your custom_card.dart
+  Widget _customCard(
+      BuildContext context, {
+        required String title,
+        required String subtitle,
+        required String buttonText,
+        required VoidCallback onButtonPressed,
+      }) {
+    return Container(
+      width: double.infinity,
+      height: 132,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        color: const Color(0xFF5C315B).withOpacity(0.20),
+      ),
+      child: Stack(
+        children: [
+          // Title + Subtitle
+          Positioned(
+            left: 20,
+            top: 20,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                    color: Color(0xFF1D1517),
+                    fontSize: 14,
+                    fontFamily: 'Poppins',
+                    fontWeight: FontWeight.w500,
+                    height: 1.50,
+                  ),
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  subtitle,
+                  style: const TextStyle(
+                    color: Color(0xFF6B6B6B),
+                    fontSize: 12,
+                    fontFamily: 'Poppins',
+                    fontWeight: FontWeight.w400,
+                    height: 1.50,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          // White circle on right
+          Positioned(
+            right: 20,
+            top: 20,
+            child: Opacity(
+              opacity: 0.50,
+              child: Container(
+                width: 60,
+                height: 60,
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  shape: BoxShape.circle,
+                ),
+              ),
+            ),
+          ),
+          // Button
+          Positioned(
+            left: 20,
+            bottom: 15,
+            child: GestureDetector(
+              onTap: onButtonPressed,
+              child: Container(
+                width: 94,
+                height: 35,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(50),
+                ),
+                alignment: Alignment.center,
+                child: Text(
+                  buttonText,
+                  style: const TextStyle(
+                    color: Color(0xFF5C315B),
+                    fontSize: 10,
+                    fontFamily: 'Poppins',
+                    fontWeight: FontWeight.w500,
+                    height: 1.50,
+                  ),
+                ),
+              ),
+            ),
           ),
         ],
       ),

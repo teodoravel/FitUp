@@ -1,4 +1,5 @@
-import 'package:flutter/cupertino.dart';
+// lib/pages/start_page.dart
+
 import 'package:flutter/material.dart';
 
 class StartPage extends StatelessWidget {
@@ -50,7 +51,8 @@ class StartPage extends StatelessWidget {
                     ),
                   ),
                   onPressed: () {
-                    Navigator.pushNamed(context, '/login'); // Navigate to login page
+                    // Takes user to login
+                    Navigator.pushNamed(context, '/login');
                   },
                   child: const Text(
                     'Log in',
@@ -88,7 +90,8 @@ class StartPage extends StatelessWidget {
                     ),
                   ),
                   onPressed: () {
-                    Navigator.pushNamed(context, '/register1'); // Navigate to register page
+                    // Takes user to the first register page
+                    Navigator.pushNamed(context, '/register1');
                   },
                   child: const Text(
                     'Create account',

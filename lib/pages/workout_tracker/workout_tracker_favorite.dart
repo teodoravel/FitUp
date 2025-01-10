@@ -9,7 +9,7 @@ class WorkoutTrackerFavoritePage extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // 1) Purple top area with back arrow
+            // 1) Purple top area
             Container(
               padding: const EdgeInsets.only(
                   left: 30, right: 30, top: 40, bottom: 20),
@@ -30,7 +30,6 @@ class WorkoutTrackerFavoritePage extends StatelessWidget {
                       color: const Color(0xFFF7F8F8),
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    // Real arrow IconButton
                     child: IconButton(
                       icon: const Icon(Icons.arrow_back_ios, size: 16),
                       color: Colors.black,
@@ -68,6 +67,9 @@ class WorkoutTrackerFavoritePage extends StatelessWidget {
                   _favoriteCard(
                     title: 'Fullbody Workout',
                     subtitle: 'Today, 03:00pm',
+                    onTap: () {
+                      Navigator.pushNamed(context, '/workoutDetails');
+                    },
                   ),
                   const SizedBox(height: 12),
                   _favoriteCard(
@@ -130,71 +132,75 @@ class WorkoutTrackerFavoritePage extends StatelessWidget {
     );
   }
 
-  // A re-usable “favorite” card for workouts, gyms, trainers
+  // Re-usable “favorite” card
   Widget _favoriteCard({
     required String title,
     String subtitle = '',
+    VoidCallback? onTap,
   }) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: const [
-          BoxShadow(
-            color: Color(0x111D1617),
-            blurRadius: 40,
-            offset: Offset(0, 10),
-            spreadRadius: 0,
-          ),
-        ],
-      ),
-      child: Row(
-        children: [
-          // circle
-          Opacity(
-            opacity: 0.30,
-            child: Container(
-              width: 50,
-              height: 50,
-              decoration: const BoxDecoration(
-                color: Colors.black,
-                shape: BoxShape.circle,
-              ),
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: const [
+            BoxShadow(
+              color: Color(0x111D1617),
+              blurRadius: 40,
+              offset: Offset(0, 10),
+              spreadRadius: 0,
             ),
-          ),
-          const SizedBox(width: 12),
-          // Titles
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                style: const TextStyle(
-                  color: Color(0xFF1D1517),
-                  fontSize: 12,
-                  fontFamily: 'Poppins',
-                  fontWeight: FontWeight.w500,
-                  height: 1.50,
+          ],
+        ),
+        child: Row(
+          children: [
+            // circle
+            Opacity(
+              opacity: 0.30,
+              child: Container(
+                width: 50,
+                height: 50,
+                decoration: const BoxDecoration(
+                  color: Colors.black,
+                  shape: BoxShape.circle,
                 ),
               ),
-              if (subtitle.isNotEmpty) ...[
-                const SizedBox(height: 4),
+            ),
+            const SizedBox(width: 12),
+            // Titles
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
                 Text(
-                  subtitle,
+                  title,
                   style: const TextStyle(
-                    color: Color(0xFFA5A3AF),
-                    fontSize: 10,
+                    color: Color(0xFF1D1517),
+                    fontSize: 12,
                     fontFamily: 'Poppins',
-                    fontWeight: FontWeight.w400,
+                    fontWeight: FontWeight.w500,
                     height: 1.50,
                   ),
                 ),
+                if (subtitle.isNotEmpty) ...[
+                  const SizedBox(height: 4),
+                  Text(
+                    subtitle,
+                    style: const TextStyle(
+                      color: Color(0xFFA5A3AF),
+                      fontSize: 10,
+                      fontFamily: 'Poppins',
+                      fontWeight: FontWeight.w400,
+                      height: 1.50,
+                    ),
+                  ),
+                ],
               ],
-            ],
-          ),
-        ],
+            ),
+          ],
+        ),
       ),
     );
   }
