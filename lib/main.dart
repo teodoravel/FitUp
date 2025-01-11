@@ -7,9 +7,9 @@ import 'pages/auth/register_page2.dart';
 import 'pages/auth/success_registration_page.dart';
 import 'package:fitup/pages/gyms/gym_list_page.dart';
 import 'package:fitup/pages/workout_tracker/workout_tracker_outdoor.dart';
-import 'pages/home_page.dart';
-import 'pages/profile_page.dart';
-import 'pages/account_page.dart';
+import 'pages/home_and_profile/home_page.dart';
+import 'pages/home_and_profile/profile_page.dart';
+import 'pages/home_and_profile/account_page.dart';
 import 'pages/workout_tracker/workout_tracker_indoor.dart';
 import 'pages/workout_tracker/workout_tracker_favorite.dart';
 import 'pages/gyms/gym_map_page.dart';
@@ -35,7 +35,7 @@ class FitUpApp extends StatelessWidget {
         primarySwatch: Colors.purple,
       ),
       // Start with the introduction page
-      home: const HomePage(),
+      home: const WorkoutTrackerFavoritePage(),
       routes: {
         // Intro & Start
         '/introduction': (context) => const Introduction(),

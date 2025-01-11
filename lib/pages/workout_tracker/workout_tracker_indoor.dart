@@ -1,6 +1,8 @@
 // workout_tracker_indoor.dart
 import 'package:flutter/material.dart';
 
+import '../../widgets/custom_card.dart';
+
 class WorkoutTrackerIndoorPage extends StatelessWidget {
   const WorkoutTrackerIndoorPage({super.key});
 
@@ -82,23 +84,20 @@ class WorkoutTrackerIndoorPage extends StatelessWidget {
                       children: [
                         _indoorOutdoorToggle(isIndoor: true, context: context),
                         const SizedBox(height: 16),
-                        _workoutCard(
-                          context,
-                          title: 'Fullbody Workout',
-                          subtitle: '11 Exercises | 32mins',
+                        CustomCard(title: 'Fullbody workout', subtitle: '11 Exercises | 32min', buttonText: 'View more',
+                            imagePath: 'assets/barbel.jpg',
+                            onButtonPressed: (){}
                         ),
                         const SizedBox(height: 20),
-                        _workoutCard(
-                          context,
-                          title: 'Lowebody Workout',
-                          subtitle: '12 Exercises | 40mins',
+                        CustomCard(title: 'Lowerbody workout', subtitle: '11 Exercises | 32min', buttonText: 'View more',
+                            imagePath: 'assets/barbel.jpg',
+                            onButtonPressed: (){}
                         ),
                         const SizedBox(height: 20),
-                        _workoutCard(
-                          context,
-                          title: 'AB Workout',
-                          subtitle: '14 Exercises | 20mins',
-                        ),
+                        CustomCard(title: 'AB workout', subtitle: '11 Exercises | 32min', buttonText: 'View more',
+                            imagePath: 'assets/barbel.jpg',
+                            onButtonPressed: (){}
+                        )
                       ],
                     ),
                   ),
@@ -239,98 +238,6 @@ class WorkoutTrackerIndoorPage extends StatelessWidget {
               ),
             ],
         ),
-    );
-  }
-
-  Widget _workoutCard(BuildContext context, {required String title, required String subtitle}) {
-    return InkWell(
-      onTap: () {
-        // Tapping a workout => '/workoutDetails'
-        Navigator.pushNamed(context, '/workoutDetails');
-      },
-      child: Container(
-        width: double.infinity,
-        height: 132,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          color: const Color(0xFF5C315B).withOpacity(0.20),
-        ),
-        child: Stack(
-          children: [
-            // White circle top right
-            Positioned(
-              right: 20,
-              top: 20,
-              child: Opacity(
-                opacity: 0.50,
-                child: Container(
-                  width: 92,
-                  height: 92,
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    shape: BoxShape.circle,
-                  ),
-                ),
-              ),
-            ),
-            // Title + subtitle
-            Positioned(
-              left: 20,
-              top: 20,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: const TextStyle(
-                      color: Color(0xFF1D1517),
-                      fontSize: 14,
-                      fontFamily: 'Poppins',
-                      fontWeight: FontWeight.w500,
-                      height: 1.50,
-                    ),
-                  ),
-                  const SizedBox(height: 6),
-                  Text(
-                    subtitle,
-                    style: const TextStyle(
-                      color: Color(0xFF6B6B6B),
-                      fontSize: 12,
-                      fontFamily: 'Poppins',
-                      fontWeight: FontWeight.w400,
-                      height: 1.50,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            // "View more" button
-            Positioned(
-              left: 20,
-              bottom: 15,
-              child: Container(
-                width: 94,
-                height: 35,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(50),
-                ),
-                alignment: Alignment.center,
-                child: const Text(
-                  'View more',
-                  style: TextStyle(
-                    color: Color(0xFF5C315B),
-                    fontSize: 10,
-                    fontFamily: 'Poppins',
-                    fontWeight: FontWeight.w500,
-                    height: 1.50,
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 }
