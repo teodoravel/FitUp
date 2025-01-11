@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
-
-  static bool justRegistered = false; // mock approach
+  static bool justRegistered = false;
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -79,6 +78,10 @@ class _LoginPageState extends State<LoginPage> {
                     prefixIcon: const Icon(Icons.email_outlined),
                     hintText: 'Email',
                     filled: true,
+                    hintStyle: const TextStyle(
+                      color: Color(0xFFB0B0B0), // Lighter gray for fainter hint text
+                      fontWeight: FontWeight.w400, // Thinner font weight
+                    ),
                     fillColor: const Color(0xFFF7F8F8),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(14),
@@ -106,6 +109,10 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     hintText: 'Password',
                     filled: true,
+                    hintStyle: const TextStyle(
+                      color: Color(0xFFB0B0B0), // Lighter gray for fainter hint text
+                      fontWeight: FontWeight.w400, // Thinner font weight
+                    ),
                     fillColor: const Color(0xFFF7F8F8),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(14),
@@ -116,7 +123,7 @@ class _LoginPageState extends State<LoginPage> {
                 const SizedBox(height: 10),
 
                 Align(
-                  alignment: Alignment.centerRight,
+                  alignment: Alignment.center,
                   child: TextButton(
                     onPressed: () {
                       _showSnackBar('Forgot password tapped');
@@ -132,7 +139,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 40),
+                const SizedBox(height: 300),
 
                 // Login button
                 Center(
@@ -168,22 +175,53 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 const SizedBox(height: 20),
 
-                const Center(child: Text('Or')),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Container(
+                        height: 1,
+                        color: Colors.grey[400],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Text(
+                        "Or",
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600, // Bolder text
+                          fontFamily: 'Poppins',
+                          color: Colors.grey[700],
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Container(
+                        height: 1,
+                        color: Colors.grey[400],
+                      ),
+                    ),
+                  ],
+                ),
                 const SizedBox(height: 20),
 
                 Center(
-                  child: Container(
-                    width: 50,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                          width: 0.8, color: const Color(0xFFDDD9DA)),
-                      borderRadius: BorderRadius.circular(14),
+                  child: GestureDetector(
+                    onTap: () {
+                      // Handle Google sign-in action here
+                      print('Google sign-in clicked');
+                    },
+                    child: Container(
+                        width: 50,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          border: Border.all(width: 0.8, color: const Color(0xFFDDD9DA)),
+                          borderRadius: BorderRadius.circular(14),
+                        ),
+                        child: Image.asset('assets/Login-Social-Media.jpg')
                     ),
-                    child: const Icon(Icons.g_mobiledata, size: 32),
                   ),
                 ),
-                const SizedBox(height: 20),
 
                 Center(
                   child: TextButton(

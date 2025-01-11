@@ -38,7 +38,7 @@ class SuccessRegistrationPage extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SizedBox(height: 300),
+                const SizedBox(height: 250),
 
                 // Go To Login or Home
                 SizedBox(
@@ -53,10 +53,10 @@ class SuccessRegistrationPage extends StatelessWidget {
                     ),
                     onPressed: () {
                       // Typically go to login or home
-                      Navigator.pushNamed(context, '/login');
+                      Navigator.pushNamed(context, '/home');
                     },
                     child: const Text(
-                      'Go To Login',
+                      'Go To Home',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 16,

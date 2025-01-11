@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'pages/start/introduction_page.dart';
-import 'pages/start_page.dart';
-import 'pages/login_page.dart';
-import 'pages/register_page1.dart';
-import 'pages/register_page2.dart';
-import 'pages/success_registration_page.dart';
+import 'pages/start/start_page.dart';
+import 'pages/auth/login_page.dart';
+import 'pages/auth/register_page1.dart';
+import 'pages/auth/register_page2.dart';
+import 'pages/auth/success_registration_page.dart';
 import 'package:fitup/pages/gyms/gym_list_page.dart';
 import 'package:fitup/pages/workout_tracker/workout_tracker_outdoor.dart';
 import 'pages/home_page.dart';
@@ -35,7 +35,7 @@ class FitUpApp extends StatelessWidget {
         primarySwatch: Colors.purple,
       ),
       // Start with the introduction page
-      home: const StartPage(),
+      home: const SuccessRegistrationPage(),
       routes: {
         // Intro & Start
         '/introduction': (context) => const Introduction(),
