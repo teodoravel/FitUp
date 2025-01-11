@@ -35,7 +35,7 @@ class FitUpApp extends StatelessWidget {
         primarySwatch: Colors.purple,
       ),
       // Start with the introduction page
-      home: const SuccessRegistrationPage(),
+      home: const HomePage(),
       routes: {
         // Intro & Start
         '/introduction': (context) => const Introduction(),
