@@ -1,5 +1,3 @@
-// lib/pages/start_page.dart
-
 import 'package:flutter/material.dart';
 
 class StartPage extends StatelessWidget {
@@ -12,14 +10,14 @@ class StartPage extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 30.0),
           child: Column(
-            mainAxisSize: MainAxisSize.min, // Centers content vertically
+            mainAxisSize: MainAxisSize.min,
             children: [
               // Main heading
               const Text(
                 "Get your\nFitness Up!",
                 style: TextStyle(
                   fontSize: 40,
-                  fontWeight: FontWeight.w700,
+                  fontWeight: FontWeight.w800,
                   color: Color(0xFF5C315B),
                   fontFamily: 'Poppins',
                 ),
@@ -51,7 +49,6 @@ class StartPage extends StatelessWidget {
                     ),
                   ),
                   onPressed: () {
-                    // Takes user to login
                     Navigator.pushNamed(context, '/login');
                   },
                   child: const Text(
@@ -68,14 +65,35 @@ class StartPage extends StatelessWidget {
               const SizedBox(height: 22),
 
               // "Or" text
-              const Text(
-                "Or",
-                style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w400,
-                  fontFamily: 'Poppins',
-                ),
+              Row(
+                children: [
+                  Expanded(
+                    child: Container(
+                      height: 1,
+                      color: Colors.grey[400],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Text(
+                      "Or",
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600, // Bolder text
+                        fontFamily: 'Poppins',
+                        color: Colors.grey[700],
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Container(
+                      height: 1,
+                      color: Colors.grey[400],
+                    ),
+                  ),
+                ],
               ),
+
               const SizedBox(height: 22),
 
               // Create account button
@@ -90,7 +108,6 @@ class StartPage extends StatelessWidget {
                     ),
                   ),
                   onPressed: () {
-                    // Takes user to the first register page
                     Navigator.pushNamed(context, '/register1');
                   },
                   child: const Text(
