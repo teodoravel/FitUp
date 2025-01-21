@@ -26,15 +26,13 @@ class ProfilePage extends StatelessWidget {
                       onPressed: () => Navigator.pop(context),
                     ),
                     const Spacer(),
-                    Center(
-                      child: const Text(
-                        'Profile',
-                        style: TextStyle(
-                          color: Color(0xFF1E1E1E),
-                          fontSize: 20,
-                          fontFamily: 'Poppins',
-                          fontWeight: FontWeight.w400,
-                        ),
+                    const Text(
+                      'Profile',
+                      style: TextStyle(
+                        color: Color(0xFF1E1E1E),
+                        fontSize: 20,
+                        fontFamily: 'Poppins',
+                        fontWeight: FontWeight.w400,
                       ),
                     ),
                     const Spacer(flex: 2),
@@ -42,30 +40,13 @@ class ProfilePage extends StatelessWidget {
                 ),
                 const SizedBox(height: 10),
 
-                // Centered profile name
-                Center(
-                  child: const Text(
-                    'Stefani Warren',
-                    style: TextStyle(
-                      color: Color(0xFF1E1E1E),
-                      fontSize: 40,
-                      fontFamily: 'Poppins',
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 20),
-
-                // Profile Picture Placeholder
-                Center(
-                  child: CircleAvatar(
-                    radius: 60, // Adjust the size of the profile picture
-                    backgroundColor: Colors.grey.shade300, // Placeholder color
-                    child: Icon(
-                      Icons.person_outline_rounded, // Default icon when there's no picture
-                      size: 50,
-                      color: Colors.black,
-                    ),
+                const Text(
+                  'Stefani Warren',
+                  style: TextStyle(
+                    color: Color(0xFF1E1E1E),
+                    fontSize: 40,
+                    fontFamily: 'Poppins',
+                    fontWeight: FontWeight.w700,
                   ),
                 ),
                 const SizedBox(height: 20),
@@ -105,7 +86,7 @@ class ProfilePage extends StatelessWidget {
                 ),
                 Divider(color: Colors.grey.shade300),
 
-                Spacer(),
+                const SizedBox(height: 20),
                 Center(
                   child: InkWell(
                     onTap: () {

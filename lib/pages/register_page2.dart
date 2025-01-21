@@ -88,7 +88,6 @@ class _RegisterPage2State extends State<RegisterPage2> {
   void _showSnackBar(String msg) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
   }
-  bool _isMetric = true;
 
   @override
   void dispose() {
@@ -144,9 +143,7 @@ class _RegisterPage2State extends State<RegisterPage2> {
                     _selectedGender = newVal!;
                   });
                 },
-
                 decoration: InputDecoration(
-                  prefixIcon: const Icon(Icons.people_outline),
                   labelText: 'Gender',
                   fillColor: const Color(0xFFF7F8F8),
                   filled: true,
@@ -165,7 +162,7 @@ class _RegisterPage2State extends State<RegisterPage2> {
                 onTap: _pickDOB,
                 decoration: InputDecoration(
                   labelText: 'Date of Birth',
-                  prefixIcon: const Icon(Icons.calendar_month),
+                  suffixIcon: const Icon(Icons.calendar_month),
                   fillColor: const Color(0xFFF7F8F8),
                   filled: true,
                   border: OutlineInputBorder(
@@ -177,85 +174,36 @@ class _RegisterPage2State extends State<RegisterPage2> {
               const SizedBox(height: 20),
 
               // Weight
-              // Weight field with toggle button
-              Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: _weightController,
-                      keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
-                        prefixIcon: const Icon(Icons.scale_outlined),
-                        labelText: _isMetric ? 'Weight (kg)' : 'Weight (lbs)',
-                        fillColor: const Color(0xFFF7F8F8),
-                        filled: true,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(14),
-                          borderSide: BorderSide.none,
-                        ),
-                      ),
-                    ),
+              TextField(
+                controller: _weightController,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                  labelText: 'Weight (kg)',
+                  fillColor: const Color(0xFFF7F8F8),
+                  filled: true,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(14),
+                    borderSide: BorderSide.none,
                   ),
-                  const SizedBox(width: 8),
-                  IconButton(
-                    onPressed: () {
-                      setState(() {
-                        _isMetric = !_isMetric;
-                      });
-                    },
-                    icon: const Icon(Icons.swap_horiz),
-                    color: Colors.white,
-                    iconSize: 20,
-                    style: TextButton.styleFrom(
-                      backgroundColor: const Color(0xFF8D35B6),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                  ),
-                ],
+                ),
               ),
               const SizedBox(height: 20),
 
               // Height
-              Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: _heightController,
-                      keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
-                        prefixIcon: const Icon(Icons.swap_vert),
-                        labelText: _isMetric ? 'Height (cm)' : 'Height (in)',
-                        fillColor: const Color(0xFFF7F8F8),
-                        filled: true,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(14),
-                          borderSide: BorderSide.none,
-                        ),
-                      ),
-                    ),
+              TextField(
+                controller: _heightController,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                  labelText: 'Height (cm)',
+                  fillColor: const Color(0xFFF7F8F8),
+                  filled: true,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(14),
+                    borderSide: BorderSide.none,
                   ),
-                  const SizedBox(width: 8),
-                  IconButton(
-                    onPressed: () {
-                      setState(() {
-                        _isMetric = !_isMetric;
-                      });
-                    },
-                    icon: const Icon(Icons.swap_horiz),
-                    color: Colors.white,
-                    iconSize: 20,
-                    style: TextButton.styleFrom(
-                      backgroundColor: const Color(0xFF8D35B6),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                  ),
-                ],
+                ),
               ),
-              const SizedBox(height: 350),
+              const SizedBox(height: 40),
 
               // Next
               SizedBox(

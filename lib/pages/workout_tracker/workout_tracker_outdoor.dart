@@ -1,4 +1,3 @@
-import 'package:fitup/widgets/custom_card.dart';
 import 'package:flutter/material.dart';
 
 class WorkoutTrackerOutdoorPage extends StatelessWidget {
@@ -99,20 +98,23 @@ class WorkoutTrackerOutdoorPage extends StatelessWidget {
                         const SizedBox(height: 16),
 
                         // The "outdoor" workout cards
-                        CustomCard(title: 'Cycling', subtitle: 'Duration: 30min', buttonText: 'View more',
-                            imagePath: 'assets/barbel.jpg',
-                            onButtonPressed: (){}
+                        _workoutCard(
+                          context,
+                          title: 'Cycling',
+                          subtitle: 'Duration: 30min',
                         ),
                         const SizedBox(height: 20),
-                        CustomCard(title: 'Swimming', subtitle: 'Duration: 20min', buttonText: 'View more',
-                            imagePath: 'assets/barbel.jpg',
-                            onButtonPressed: (){}
+                        _workoutCard(
+                          context,
+                          title: 'Running',
+                          subtitle: 'Duration: 1h',
                         ),
                         const SizedBox(height: 20),
-                        CustomCard(title: 'Running', subtitle: 'Duration: 1h', buttonText: 'View more',
-                            imagePath: 'assets/barbel.jpg',
-                            onButtonPressed: (){}
-                        )
+                        _workoutCard(
+                          context,
+                          title: 'Swimming',
+                          subtitle: 'Duration: 20min',
+                        ),
                       ],
                     ),
                   ),
@@ -271,4 +273,100 @@ class WorkoutTrackerOutdoorPage extends StatelessWidget {
     );
   }
 
+  // The big “outdoor” workout card
+  Widget _workoutCard(
+      BuildContext context, {
+        required String title,
+        required String subtitle,
+      }) {
+    return InkWell(
+      onTap: () {
+        // For now, if they tap on any main outdoor workout, route them to /workoutDetails
+        Navigator.pushNamed(context, '/workoutDetails');
+      },
+      child: Container(
+        width: double.infinity,
+        height: 132,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          color: const Color(0xFF5C315B).withOpacity(0.20),
+        ),
+        child: Stack(
+          children: [
+            // White circle top right
+            Positioned(
+              right: 20,
+              top: 20,
+              child: Opacity(
+                opacity: 0.50,
+                child: Container(
+                  width: 92,
+                  height: 92,
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.circle,
+                  ),
+                ),
+              ),
+            ),
+            // Title + subtitle
+            Positioned(
+              left: 20,
+              top: 20,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      color: Color(0xFF1D1517),
+                      fontSize: 14,
+                      fontFamily: 'Poppins',
+                      fontWeight: FontWeight.w500,
+                      height: 1.50,
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  Text(
+                    subtitle,
+                    style: const TextStyle(
+                      color: Color(0xFF6B6B6B),
+                      fontSize: 12,
+                      fontFamily: 'Poppins',
+                      fontWeight: FontWeight.w400,
+                      height: 1.50,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            // "View more" button
+            Positioned(
+              left: 20,
+              bottom: 15,
+              child: Container(
+                width: 94,
+                height: 35,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(50),
+                ),
+                alignment: Alignment.center,
+                child: const Text(
+                  'View more',
+                  style: TextStyle(
+                    color: Color(0xFF5C315B),
+                    fontSize: 10,
+                    fontFamily: 'Poppins',
+                    fontWeight: FontWeight.w500,
+                    height: 1.50,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }
