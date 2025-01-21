@@ -1,14 +1,19 @@
-// lib/pages/add_workout_schedule.dart
-
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 
-class AddWorkoutSchedulePage extends StatelessWidget {
+class AddWorkoutSchedulePage extends StatefulWidget {
   const AddWorkoutSchedulePage({super.key});
+
+  @override
+  State<AddWorkoutSchedulePage> createState() => _AddWorkoutSchedulePageState();
+}
+
+class _AddWorkoutSchedulePageState extends State<AddWorkoutSchedulePage> {
+  DateTime _selectedTime = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // Example design
       appBar: AppBar(
         title: const Text('Add Schedule'),
         leading: IconButton(
@@ -16,7 +21,6 @@ class AddWorkoutSchedulePage extends StatelessWidget {
           onPressed: () => Navigator.pop(context),
         ),
         actions: [
-          // 3-dot placeholder
           IconButton(
             icon: const Icon(Icons.more_horiz),
             onPressed: () {},
@@ -28,7 +32,6 @@ class AddWorkoutSchedulePage extends StatelessWidget {
           padding: const EdgeInsets.all(20),
           child: Column(
             children: [
-              // Example date
               const Text(
                 'Thu, 27 May 2025',
                 style: TextStyle(
@@ -52,9 +55,19 @@ class AddWorkoutSchedulePage extends StatelessWidget {
               const SizedBox(height: 10),
               Container(
                 height: 120,
-                color: Colors.grey.shade200,
-                child: const Center(
-                  child: Text('Time picker placeholder'),
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade200,
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: CupertinoDatePicker(
+                  mode: CupertinoDatePickerMode.time,
+                  initialDateTime: _selectedTime,
+                  use24hFormat: true,
+                  onDateTimeChanged: (DateTime newTime) {
+                    setState(() {
+                      _selectedTime = newTime;
+                    });
+                  },
                 ),
               ),
               const SizedBox(height: 20),

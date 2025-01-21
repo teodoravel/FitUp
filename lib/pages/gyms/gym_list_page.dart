@@ -1,7 +1,4 @@
-// gym_list_page.dart
 import 'package:flutter/material.dart';
-import '../../widgets/custom_card.dart';
-
 
 class GymListPage extends StatelessWidget {
   const GymListPage({super.key});
@@ -188,20 +185,20 @@ class GymListPage extends StatelessWidget {
 
   Widget _upcomingCard({required String title, required String subtitle}) {
     return Container(
-        width: double.infinity,
-        height: 80,
-        decoration: BoxDecoration(
+      width: double.infinity,
+      height: 80,
+      decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
-          boxShadow: const [
-            BoxShadow(
-              color: Color(0x111D1617),
-              blurRadius: 40,
-              offset: Offset(0, 10),
-              spreadRadius: 0,
-            )
-          ],
-        ),
+        boxShadow: const [
+          BoxShadow(
+            color: Color(0x111D1617),
+            blurRadius: 40,
+            offset: Offset(0, 10),
+            spreadRadius: 0,
+          )
+        ],
+      ),
       child: Row(
         children: [
           const SizedBox(width: 15),
@@ -249,14 +246,13 @@ class GymListPage extends StatelessWidget {
     );
   }
 
-  // Replacing "CustomCard" usage with direct code or you can still import your custom_card.dart
   Widget _customCard(
-      BuildContext context, {
-        required String title,
-        required String subtitle,
-        required String buttonText,
-        required VoidCallback onButtonPressed,
-      }) {
+    BuildContext context, {
+    required String title,
+    required String subtitle,
+    required String buttonText,
+    required VoidCallback onButtonPressed,
+  }) {
     return Container(
       width: double.infinity,
       height: 132,
