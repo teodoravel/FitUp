@@ -1,11 +1,5 @@
 // gym_list_page.dart
 import 'package:flutter/material.dart';
-<<<<<<< HEAD
-import '../../custom_card.dart';
-=======
-
-import '../../widgets/custom_card.dart';
->>>>>>> 749e1343f1c35b30465549d45fe685bc124b4d5b
 
 class GymListPage extends StatelessWidget {
   const GymListPage({super.key});
