@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 
-// A regex enforcing:
-// - at least one uppercase [A-Z]
-// - at least one digit \d
-// - at least one special char [^A-Za-z0-9] or a curated set
-// - at least 8 chars total
-// - no whitespace
+/* A regex enforcing:
+ - at least one uppercase [A-Z]
+ - at least one digit \d
+ - at least one special char [^A-Za-z0-9] or a curated set
+ - at least 8 chars total
+ - no whitespace */
+
 final RegExp _passwordRegex =
     RegExp(r'^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9])[^\s]{8,}$');
 // Basic email check
@@ -13,7 +14,6 @@ final RegExp _emailRegex = RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$');
 
 class RegisterPage1 extends StatefulWidget {
   const RegisterPage1({super.key});
-
   @override
   State<RegisterPage1> createState() => _RegisterPage1State();
 }
@@ -47,7 +47,6 @@ class _RegisterPage1State extends State<RegisterPage1> {
       );
       return;
     }
-
     Navigator.pushNamed(context, '/register2');
   }
 
@@ -89,6 +88,11 @@ class _RegisterPage1State extends State<RegisterPage1> {
                   prefixIcon: const Icon(Icons.person_outline),
                   hintText: 'Full Name',
                   filled: true,
+                  hintStyle: const TextStyle(
+                    color:
+                        Color(0xFFB0B0B0), // Lighter gray for fainter hint text
+                    fontWeight: FontWeight.w400, // Thinner font weight
+                  ),
                   fillColor: const Color(0xFFF7F8F8),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(14),
@@ -106,6 +110,11 @@ class _RegisterPage1State extends State<RegisterPage1> {
                   prefixIcon: const Icon(Icons.email_outlined),
                   hintText: 'Email',
                   filled: true,
+                  hintStyle: const TextStyle(
+                    color:
+                        Color(0xFFB0B0B0), // Lighter gray for fainter hint text
+                    fontWeight: FontWeight.w400, // Thinner font weight
+                  ),
                   fillColor: const Color(0xFFF7F8F8),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(14),
@@ -123,6 +132,11 @@ class _RegisterPage1State extends State<RegisterPage1> {
                   prefixIcon: const Icon(Icons.lock_outline),
                   hintText: 'Password',
                   filled: true,
+                  hintStyle: const TextStyle(
+                    color:
+                        Color(0xFFB0B0B0), // Lighter gray for fainter hint text
+                    fontWeight: FontWeight.w400, // Thinner font weight
+                  ),
                   fillColor: const Color(0xFFF7F8F8),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(14),
@@ -130,7 +144,7 @@ class _RegisterPage1State extends State<RegisterPage1> {
                   ),
                 ),
               ),
-              const SizedBox(height: 40),
+              const SizedBox(height: 300),
 
               // Register button
               Center(
@@ -160,22 +174,55 @@ class _RegisterPage1State extends State<RegisterPage1> {
               const SizedBox(height: 20),
 
               // Or
-              const Center(child: Text('Or')),
+              Row(
+                children: [
+                  Expanded(
+                    child: Container(
+                      height: 1,
+                      color: Colors.grey[400],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Text(
+                      "Or",
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600, // Bolder text
+                        fontFamily: 'Poppins',
+                        color: Colors.grey[700],
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Container(
+                      height: 1,
+                      color: Colors.grey[400],
+                    ),
+                  ),
+                ],
+              ),
               const SizedBox(height: 20),
 
-              // Google sign in icon placeholder
               Center(
-                child: Container(
-                  width: 50,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    border:
-                        Border.all(width: 0.8, color: const Color(0xFFDDD9DA)),
-                    borderRadius: BorderRadius.circular(14),
-                  ),
-                  child: const Icon(Icons.g_mobiledata, size: 32),
+                child: GestureDetector(
+                  onTap: () {
+                    // Handle Google sign-in action here
+                    // ignore: avoid_print
+                    print('Google sign-in clicked');
+                  },
+                  child: Container(
+                      width: 50,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                            width: 0.8, color: const Color(0xFFDDD9DA)),
+                        borderRadius: BorderRadius.circular(14),
+                      ),
+                      child: Image.asset('assets/Login-Social-Media.jpg')),
                 ),
               ),
+
               const SizedBox(height: 20),
 
               // Already have an account?

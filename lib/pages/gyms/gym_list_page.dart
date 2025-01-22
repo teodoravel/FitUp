@@ -13,7 +13,8 @@ class GymListPage extends StatelessWidget {
           children: [
             // 1) Purple top area
             Container(
-              padding: const EdgeInsets.only(left: 30, right: 30, top: 40, bottom: 20),
+              padding: const EdgeInsets.only(
+                  left: 30, right: 30, top: 40, bottom: 20),
               decoration: const BoxDecoration(
                 color: Color(0xB65C315B),
                 borderRadius: BorderRadius.only(
@@ -186,20 +187,20 @@ class GymListPage extends StatelessWidget {
 
   Widget _upcomingCard({required String title, required String subtitle}) {
     return Container(
-        width: double.infinity,
-        height: 80,
-        decoration: BoxDecoration(
+      width: double.infinity,
+      height: 80,
+      decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
-          boxShadow: const [
-            BoxShadow(
-              color: Color(0x111D1617),
-              blurRadius: 40,
-              offset: Offset(0, 10),
-              spreadRadius: 0,
-            )
-          ],
-        ),
+        boxShadow: const [
+          BoxShadow(
+            color: Color(0x111D1617),
+            blurRadius: 40,
+            offset: Offset(0, 10),
+            spreadRadius: 0,
+          )
+        ],
+      ),
       child: Row(
         children: [
           const SizedBox(width: 15),
@@ -249,17 +250,18 @@ class GymListPage extends StatelessWidget {
 
   // Replacing "CustomCard" usage with direct code or you can still import your custom_card.dart
   Widget _customCard(
-      BuildContext context, {
-        required String title,
-        required String subtitle,
-        required String buttonText,
-        required VoidCallback onButtonPressed,
-      }) {
+    BuildContext context, {
+    required String title,
+    required String subtitle,
+    required String buttonText,
+    required VoidCallback onButtonPressed,
+  }) {
     return Container(
       width: double.infinity,
       height: 132,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
+        // ignore: deprecated_member_use
         color: const Color(0xFF5C315B).withOpacity(0.20),
       ),
       child: Stack(

@@ -186,78 +186,88 @@ class HomePage extends StatelessWidget {
     final exerciseDose = [2.5, 2.0, 2.3, 1.0, 0.5, 2.0, 0.3];
     final dailyGoal = [2.5, 2.5, 2.5, 2.0, 2.0, 2.5, 1.5];
     const maxHours = 2.5;
-    final yLabels = ['2.5 h', '2 h', '1.5 h', '1 h', '30 min', '10 min', '0 min'];
+    final yLabels = [
+      '2.5 h',
+      '2 h',
+      '1.5 h',
+      '1 h',
+      '30 min',
+      '10 min',
+      '0 min'
+    ];
 
     return SizedBox(
-        height: 220,
-        child: Column(
+      height: 220,
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-        Expanded(
-        child: Row(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-        SizedBox(
-        width: 40,
-        child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: yLabels
-            .map((label) => Text(label, style: const TextStyle(fontSize: 12)))
-        .toList(),
-    ),
-    ),
-    const SizedBox(width: 8),
           Expanded(
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: List.generate(days.length, (index) {
-                  final ex = exerciseDose[index];
-                  final dg = dailyGoal[index];
-                  const chartH = 140.0;
-                  final exH = (ex / maxHours) * chartH;
-                  final dgH = (dg / maxHours) * chartH;
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                SizedBox(
+                  width: 40,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: yLabels
+                        .map((label) =>
+                            Text(label, style: const TextStyle(fontSize: 12)))
+                        .toList(),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: List.generate(days.length, (index) {
+                        final ex = exerciseDose[index];
+                        final dg = dailyGoal[index];
+                        const chartH = 140.0;
+                        final exH = (ex / maxHours) * chartH;
+                        final dgH = (dg / maxHours) * chartH;
 
-                  return Padding(
-                    padding: const EdgeInsets.only(right: 24),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Container(
-                              width: 10,
-                              height: exH,
-                              decoration: BoxDecoration(
-                                color: const Color(0xFF9552A0),
-                                borderRadius: BorderRadius.circular(4),
+                        return Padding(
+                          padding: const EdgeInsets.only(right: 24),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Container(
+                                    width: 10,
+                                    height: exH,
+                                    decoration: BoxDecoration(
+                                      color: const Color(0xFF9552A0),
+                                      borderRadius: BorderRadius.circular(4),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 6),
+                                  Container(
+                                    width: 10,
+                                    height: dgH,
+                                    decoration: BoxDecoration(
+                                      color: const Color(0xFFF8EAFB),
+                                      borderRadius: BorderRadius.circular(4),
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ),
-                            const SizedBox(width: 6),
-                            Container(
-                              width: 10,
-                              height: dgH,
-                              decoration: BoxDecoration(
-                                color: const Color(0xFFF8EAFB),
-                                borderRadius: BorderRadius.circular(4),
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 8),
-                        Text(days[index], style: const TextStyle(fontSize: 12)),
-                      ],
+                              const SizedBox(height: 8),
+                              Text(days[index],
+                                  style: const TextStyle(fontSize: 12)),
+                            ],
+                          ),
+                        );
+                      }),
                     ),
-                  );
-                }),
-              ),
+                  ),
+                ),
+              ],
             ),
           ),
-        ],
-        ),
-        ),
           const SizedBox(height: 10),
           Row(
             children: [
@@ -285,7 +295,7 @@ class HomePage extends StatelessWidget {
             ],
           ),
         ],
-        ),
+      ),
     );
   }
 
@@ -386,97 +396,98 @@ class HomePage extends StatelessWidget {
 
   Widget _buildGymBox(BuildContext context) {
     return GestureDetector(
-        onTap: () {},
-    child: Container(
-    height: 132,
-    decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
-    child: Stack(
-    children: [
-    Opacity(
-    opacity: 0.20,
-    child: Container(
-    decoration: BoxDecoration(
-    color: const Color(0xFF5C315B),
-    borderRadius: BorderRadius.circular(20),
-    ),
-    ),
-    ),
-    const Positioned(
-    left: 20,
-    top: 20,
-    child: SizedBox(
-    width: 60,
-    child: Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [Text(
-      'Gym 1',
-      style: TextStyle(
-        color: Color(0xFF1D1517),
-        fontSize: 14,
-        fontFamily: 'Poppins',
-        fontWeight: FontWeight.w500,
-      ),
-    ),
-      SizedBox(height: 6),
-      Text(
-        'Location',
-        style: TextStyle(
-          color: Color(0xFF6B6B6B),
-          fontSize: 12,
-          fontFamily: 'Poppins',
-          fontWeight: FontWeight.w400,
-        ),
-      ),
-    ],
-    ),
-    ),
-    ),
-      Positioned(
-        right: 20,
-        top: 20,
-        child: Opacity(
-          opacity: 0.50,
-          child: Container(
-            width: 92,
-            height: 92,
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              shape: BoxShape.circle,
-            ),
-          ),
-        ),
-      ),
-      Positioned(
-        left: 20,
-        bottom: 15,
-        child: GestureDetector(
-          onTap: () {
-            Navigator.pushNamed(context, '/gymMap');
-          },
-          child: Container(
-            width: 94,
-            height: 35,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(50),
-            ),
-            child: const Center(
-              child: Text(
-                'See on map',
-                style: TextStyle(
-                  color: Color(0xFF5C315B),
-                  fontSize: 10,
-                  fontFamily: 'Poppins',
-                  fontWeight: FontWeight.w500,
+      onTap: () {},
+      child: Container(
+        height: 132,
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
+        child: Stack(
+          children: [
+            Opacity(
+              opacity: 0.20,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: const Color(0xFF5C315B),
+                  borderRadius: BorderRadius.circular(20),
                 ),
               ),
             ),
-          ),
+            const Positioned(
+              left: 20,
+              top: 20,
+              child: SizedBox(
+                width: 60,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Gym 1',
+                      style: TextStyle(
+                        color: Color(0xFF1D1517),
+                        fontSize: 14,
+                        fontFamily: 'Poppins',
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    SizedBox(height: 6),
+                    Text(
+                      'Location',
+                      style: TextStyle(
+                        color: Color(0xFF6B6B6B),
+                        fontSize: 12,
+                        fontFamily: 'Poppins',
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Positioned(
+              right: 20,
+              top: 20,
+              child: Opacity(
+                opacity: 0.50,
+                child: Container(
+                  width: 92,
+                  height: 92,
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.circle,
+                  ),
+                ),
+              ),
+            ),
+            Positioned(
+              left: 20,
+              bottom: 15,
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(context, '/gymMap');
+                },
+                child: Container(
+                  width: 94,
+                  height: 35,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                  child: const Center(
+                    child: Text(
+                      'See on map',
+                      style: TextStyle(
+                        color: Color(0xFF5C315B),
+                        fontSize: 10,
+                        fontFamily: 'Poppins',
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
-    ],
-    ),
-    ),
     );
   }
 }
@@ -485,7 +496,12 @@ class _NavIconLabel extends StatelessWidget {
   final IconData icon;
   final String label;
   final VoidCallback onTap;
-  const _NavIconLabel({required this.icon, required this.label, required this.onTap, super.key});
+  // ignore: unused_element
+  const _NavIconLabel(
+      {required this.icon,
+      required this.label,
+      required this.onTap,
+      super.key});
 
   @override
   Widget build(BuildContext context) {

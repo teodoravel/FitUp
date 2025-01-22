@@ -20,7 +20,8 @@ class _GymMapPageState extends State<GymMapPage> {
           children: [
             // Purple top area
             Container(
-              padding: const EdgeInsets.only(left: 30, right: 30, top: 20, bottom: 20),
+              padding: const EdgeInsets.only(
+                  left: 30, right: 30, top: 20, bottom: 20),
               decoration: const BoxDecoration(
                 color: Color(0xFF5C315B),
                 borderRadius: BorderRadius.only(
@@ -71,20 +72,21 @@ class _GymMapPageState extends State<GymMapPage> {
                   child: FlutterMap(
                     mapController: _mapController,
                     options: MapOptions(
-                      center: LatLng(42.00378, 21.41103), // example coords
+                      center:
+                          const LatLng(42.00378, 21.41103), // example coords
                       zoom: 16.0,
                     ),
                     children: [
                       TileLayer(
                         urlTemplate:
-                        'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                        subdomains: ['a', 'b', 'c'],
+                            'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                        subdomains: const ['a', 'b', 'c'],
                         userAgentPackageName: 'com.example.fitup',
                       ),
                       MarkerLayer(
                         markers: [
                           Marker(
-                            point: LatLng(42.00378, 21.41103),
+                            point: const LatLng(42.00378, 21.41103),
                             width: 40,
                             height: 40,
                             builder: (context) => const Icon(

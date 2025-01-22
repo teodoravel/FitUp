@@ -7,12 +7,12 @@ class ExerciseCard extends StatelessWidget {
   final VoidCallback onTap;
 
   const ExerciseCard({
-    Key? key,
+    super.key,
     required this.imageUrl,
     required this.exerciseName,
     required this.reps,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -34,8 +34,9 @@ class ExerciseCard extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
                 color: Colors.grey[300],
-                image: DecorationImage(
-                  image: AssetImage('assets/barbel.jpg'), // Replace with actual image path
+                image: const DecorationImage(
+                  image: AssetImage(
+                      'assets/barbel.jpg'), // Replace with actual image path
                   fit: BoxFit.cover,
                 ),
               ),
@@ -79,4 +80,3 @@ class ExerciseCard extends StatelessWidget {
     );
   }
 }
-

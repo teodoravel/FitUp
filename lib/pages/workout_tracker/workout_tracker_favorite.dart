@@ -199,6 +199,12 @@ class WorkoutTrackerFavoritePage extends StatelessWidget {
                 ],
               ],
             ),
+            const Spacer(), // To push the heart icon to the right
+            const Icon(
+              Icons.favorite,
+              color: Colors.red, // Red color for the heart icon
+              size: 20, // Adjust size as needed
+            ),
           ],
         ),
       ),
