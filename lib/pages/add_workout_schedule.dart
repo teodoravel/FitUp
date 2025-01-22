@@ -11,6 +11,25 @@ class AddWorkoutSchedulePage extends StatefulWidget {
 class _AddWorkoutSchedulePageState extends State<AddWorkoutSchedulePage> {
   DateTime _selectedTime = DateTime.now();
 
+  // Dropdown options:
+  final List<String> _workoutOptions = [
+    'Fullbody Workout',
+    'Upperbody Workout',
+    'Lowerbody Workout',
+  ];
+  final List<String> _difficultyOptions = [
+    'Beginner',
+    'Intermediate',
+    'Advanced',
+  ];
+
+  // Selected values for the dropdowns:
+  String _selectedWorkout = 'Upperbody Workout';
+  String _selectedDifficulty = 'Beginner';
+
+  // For Custom Repetitions text field:
+  String _customReps = '';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -126,38 +145,183 @@ class _AddWorkoutSchedulePageState extends State<AddWorkoutSchedulePage> {
   }
 
   Widget _detailItem(String title, String value) {
-    return Container(
-      height: 50,
-      decoration: BoxDecoration(
-        color: const Color(0xFFF7F8F8),
-        borderRadius: BorderRadius.circular(16),
-      ),
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: Row(
-        children: [
-          Text(
-            title,
-            style: const TextStyle(
-              color: Color(0xFFB6B4C1),
-              fontSize: 12,
-              fontFamily: 'Poppins',
-              fontWeight: FontWeight.w400,
-              height: 1.50,
+    // We will conditionally build different widgets based on the 'title'.
+    if (title == 'Choose Workout') {
+      return Container(
+        height: 50,
+        decoration: BoxDecoration(
+          color: const Color(0xFFF7F8F8),
+          borderRadius: BorderRadius.circular(16),
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Row(
+          children: [
+            Text(
+              title,
+              style: const TextStyle(
+                color: Color(0xFFB6B4C1),
+                fontSize: 12,
+                fontFamily: 'Poppins',
+                fontWeight: FontWeight.w400,
+                height: 1.50,
+              ),
             ),
-          ),
-          const Spacer(),
-          Text(
-            value,
-            style: const TextStyle(
-              color: Color(0xFFA5A3AF),
-              fontSize: 10,
-              fontFamily: 'Poppins',
-              fontWeight: FontWeight.w400,
-              height: 1.50,
+            const Spacer(),
+            DropdownButton<String>(
+              value: _selectedWorkout,
+              underline: const SizedBox(), // Remove default underline
+              items: _workoutOptions.map((option) {
+                return DropdownMenuItem(
+                  value: option,
+                  child: Text(
+                    option,
+                    style: const TextStyle(
+                      color: Color(0xFFA5A3AF),
+                      fontSize: 10,
+                      fontFamily: 'Poppins',
+                      fontWeight: FontWeight.w400,
+                      height: 1.50,
+                    ),
+                  ),
+                );
+              }).toList(),
+              onChanged: (newValue) {
+                setState(() {
+                  _selectedWorkout = newValue!;
+                });
+              },
             ),
-          ),
-        ],
-      ),
+          ],
+        ),
+      );
+    } else if (title == 'Difficulty') {
+      return Container(
+          height: 50,
+          decoration: BoxDecoration(
+          color: const Color(0xFFF7F8F8),
+    borderRadius: BorderRadius.circular(16),
+    ),
+    padding: const EdgeInsets.symmetric(horizontal: 16),
+    child: Row(
+    children: [
+    Text(
+    title,
+    style: const TextStyle(
+    color: Color(0xFFB6B4C1),
+    fontSize: 12,
+    fontFamily: 'Poppins',
+    fontWeight: FontWeight.w400,
+    height: 1.50,
+    ),
+    ),
+    const Spacer(),
+    DropdownButton<String>(
+    value: _selectedDifficulty,
+    underline: const SizedBox(),
+    items: _difficultyOptions.map((option) {
+    return DropdownMenuItem(
+    value: option,
+    child: Text(
+    option,style: const TextStyle(
+      color: Color(0xFFA5A3AF),
+      fontSize: 10,
+      fontFamily: 'Poppins',
+      fontWeight: FontWeight.w400,
+      height: 1.50,
+    ),
+    ),
     );
+    }).toList(),
+      onChanged: (newValue) {
+        setState(() {
+          _selectedDifficulty = newValue!;
+        });
+      },
+    ),
+    ],
+    ),
+      );
+    } else if (title == 'Custom Repetitions') {
+      return Container(
+        height: 50,
+        decoration: BoxDecoration(
+          color: const Color(0xFFF7F8F8),
+          borderRadius: BorderRadius.circular(16),
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Row(
+          children: [
+            Text(
+              title,
+              style: const TextStyle(
+                color: Color(0xFFB6B4C1),
+                fontSize: 12,
+                fontFamily: 'Poppins',
+                fontWeight: FontWeight.w400,
+                height: 1.50,
+              ),
+            ),
+            const Spacer(),
+            SizedBox(
+              width: 60,
+              child: TextField(
+                keyboardType: TextInputType.number,
+                style: const TextStyle(
+                  color: Color(0xFFA5A3AF),
+                  fontSize: 10,
+                  fontFamily: 'Poppins',
+                  fontWeight: FontWeight.w400,
+                  height: 1.50,
+                ),
+                decoration: const InputDecoration(
+                  hintText: '0',
+                  border: InputBorder.none,
+                ),
+                onChanged: (value) {
+                  setState(() {
+                    _customReps = value;
+                  });
+                },
+              ),
+            ),
+          ],
+        ),
+      );
+    } else {
+      // Default: for any other title not specified above
+      return Container(
+        height: 50,
+        decoration: BoxDecoration(
+          color: const Color(0xFFF7F8F8),
+          borderRadius: BorderRadius.circular(16),
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Row(
+          children: [
+            Text(
+              title,
+              style: const TextStyle(
+                color: Color(0xFFB6B4C1),
+                fontSize: 12,
+                fontFamily: 'Poppins',
+                fontWeight: FontWeight.w400,
+                height: 1.50,
+              ),
+            ),
+            const Spacer(),
+            Text(
+              value,
+              style: const TextStyle(
+                color: Color(0xFFA5A3AF),
+                fontSize: 10,
+                fontFamily: 'Poppins',
+                fontWeight: FontWeight.w400,
+                height: 1.50,
+              ),
+            ),
+          ],
+        ),
+      );
+    }
   }
 }
