@@ -1,14 +1,21 @@
-// lib/pages/workout_schedule.dart
-
 import 'package:flutter/material.dart';
+// If using table_calendar:
+import 'package:table_calendar/table_calendar.dart';
 
-class WorkoutSchedulePage extends StatelessWidget {
+class WorkoutSchedulePage extends StatefulWidget {
   const WorkoutSchedulePage({super.key});
+
+  @override
+  State<WorkoutSchedulePage> createState() => _WorkoutSchedulePageState();
+}
+
+class _WorkoutSchedulePageState extends State<WorkoutSchedulePage> {
+  DateTime _focusedDay = DateTime.now();
+  DateTime? _selectedDay;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // Example design
       appBar: AppBar(
         title: const Text('Workout Schedule'),
         leading: IconButton(
@@ -19,8 +26,9 @@ class WorkoutSchedulePage extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // Fake "Calendar"
+            // Calendar
             const SizedBox(height: 20),
+            // Example heading
             const Text(
               'September 2025',
               style: TextStyle(
@@ -30,13 +38,32 @@ class WorkoutSchedulePage extends StatelessWidget {
             ),
             Container(
               margin: const EdgeInsets.all(20),
-              height: 300,
-              color: Colors.grey.shade200,
-              child: const Center(
-                child: Text('Calendar widget placeholder'),
+              decoration: BoxDecoration(
+                color: Colors.grey.shade200,
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: TableCalendar(
+                firstDay: DateTime.utc(2021, 1, 1),
+                lastDay: DateTime.utc(2030, 12, 31),
+                focusedDay: _focusedDay,
+                selectedDayPredicate: (day) {
+                  return isSameDay(_selectedDay, day);
+                },
+                onDaySelected: (selectedDay, focusedDay) {
+                  setState(() {
+                    _selectedDay = selectedDay;
+                    _focusedDay = focusedDay;
+                  });
+                },
+                calendarStyle: const CalendarStyle(
+                  todayDecoration:
+                  BoxDecoration(color: Colors.purple, shape: BoxShape.circle),
+                  selectedDecoration:
+                  BoxDecoration(color: Color(0xFF5C315B), shape: BoxShape.circle),
+                ),
               ),
             ),
-            // Example: Show a schedule item
+            // Example schedule item
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 16),
               child: Align(
@@ -51,7 +78,6 @@ class WorkoutSchedulePage extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         backgroundColor: const Color(0xFF5C315B),
         onPressed: () {
-          // Go to add schedule page
           Navigator.pushNamed(context, '/addSchedule');
         },
         child: const Icon(Icons.add),

@@ -105,7 +105,7 @@ class ProfilePage extends StatelessWidget {
                 ),
                 Divider(color: Colors.grey.shade300),
 
-                Spacer(),
+                const Spacer(),
                 Center(
                   child: InkWell(
                     onTap: () {

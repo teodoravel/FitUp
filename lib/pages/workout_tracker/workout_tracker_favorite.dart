@@ -89,9 +89,19 @@ class WorkoutTrackerFavoritePage extends StatelessWidget {
                   // Trainers
                   _sectionTitle('Trainers'),
                   const SizedBox(height: 10),
-                  _favoriteCard(title: 'Trainer 1'),
+                  _favoriteCard(
+                    title: 'Trainer 1',
+                    onTap: () {
+                      Navigator.pushNamed(context, '/trainerDetails');
+                    },
+                  ),
                   const SizedBox(height: 12),
-                  _favoriteCard(title: 'Trainer 2'),
+                  _favoriteCard(
+                    title: 'Trainer 2',
+                    onTap: () {
+                      Navigator.pushNamed(context, '/trainerDetails');
+                    },
+                  ),
 
                   const SizedBox(height: 40),
                 ],
@@ -200,7 +210,7 @@ class WorkoutTrackerFavoritePage extends StatelessWidget {
               ],
             ),
             const Spacer(), // To push the heart icon to the right
-            Icon(
+            const Icon(
               Icons.favorite,
               color: Colors.red, // Red color for the heart icon
               size: 20, // Adjust size as needed

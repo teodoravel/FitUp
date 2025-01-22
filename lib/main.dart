@@ -31,11 +31,11 @@ class FitUpApp extends StatelessWidget {
     return MaterialApp(
       title: 'FitUp',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.purple,
-      ),
-      // Start with the introduction page
-      home: const WorkoutTrackerFavoritePage(),
+      theme: ThemeData(primarySwatch: Colors.purple),
+
+      // Choose your initial screen
+      home: const Introduction(),
+
       routes: {
         // Intro & Start
         '/introduction': (context) => const Introduction(),
@@ -56,15 +56,14 @@ class FitUpApp extends StatelessWidget {
         '/workoutIndoor': (context) => const WorkoutTrackerIndoorPage(),
         '/workoutOutdoor': (context) => const WorkoutTrackerOutdoorPage(),
         '/workoutFavorite': (context) => const WorkoutTrackerFavoritePage(),
-       // '/workoutDetails': (context) => const WorkoutDetailsPage(),
 
         // Gyms
         '/gyms': (context) => const GymListPage(),
         '/gymMap': (context) => const GymMapPage(),
         '/trainerDetails': (context) => const TrainerDetailsPage(),
 
-        // Workout Details
-      //  '/workoutDetails': (context) => const WorkoutDetailsPage(),
+        // Workout details
+        '/workoutDetails': (context) => const WorkoutDetailsPage(),
         '/workoutDetails2': (context) => const WorkoutDetails2Page(),
         '/startWorkout': (context) => const StartWorkoutPage(),
 

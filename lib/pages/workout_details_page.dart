@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../widgets/exercise_card.dart';
@@ -93,18 +92,18 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
                       ),
                     ),
                     padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Row(
+                    child: const Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Row(
                           children: [
-                            const Icon(
+                            Icon(
                               Icons.calendar_today,
                               color: Color(0xFF6B6B6B),
                               size: 18,
                             ),
-                            const SizedBox(width: 8),
-                            const Text(
+                            SizedBox(width: 8),
+                            Text(
                               "Schedule Workout",
                               style: TextStyle(
                                 fontSize: 14,
@@ -114,15 +113,14 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
                             ),
                           ],
                         ),
-                        const Text(
+                        Text(
                           "5/27, 09:00 AM",
                           style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w400,
-                            color: Color(0xFF6B6B6B)
-                          ),
+                              fontSize: 12,
+                              fontWeight: FontWeight.w400,
+                              color: Color(0xFF6B6B6B)),
                         ),
-                        const Icon(
+                        Icon(
                           Icons.arrow_forward_ios,
                           color: Color(0xFF6B6B6B),
                           size: 18,
@@ -146,15 +144,15 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Row(
+                        const Row(
                           children: [
-                            const Icon(
+                            Icon(
                               Icons.swap_vert,
                               color: Color(0xFF6B6B6B),
                               size: 18,
                             ),
-                            const SizedBox(width: 8),
-                            const Text(
+                            SizedBox(width: 8),
+                            Text(
                               "Difficulty",
                               style: TextStyle(
                                 fontSize: 14,
@@ -176,9 +174,13 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
                             color: Color(0xFF6B6B6B),
                             size: 18,
                           ),
-                          dropdownColor: const Color(0xFFF7F8F8), // Background color of dropdown
-                          items: <String>['Beginner', 'Intermediate', 'Advanced']
-                              .map<DropdownMenuItem<String>>((String value) {
+                          dropdownColor: const Color(
+                              0xFFF7F8F8), // Background color of dropdown
+                          items: <String>[
+                            'Beginner',
+                            'Intermediate',
+                            'Advanced'
+                          ].map<DropdownMenuItem<String>>((String value) {
                             return DropdownMenuItem<String>(
                               value: value,
                               child: Text(
@@ -197,17 +199,17 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
                   const SizedBox(height: 40),
 
                   // Row with "You’ll Need" and "5 Items"
-                  Row(
+                  const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
+                      Text(
                         "You’ll Need",
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
-                      const Text(
+                      Text(
                         "5 Items",
                         style: TextStyle(
                           fontSize: 12,
@@ -216,7 +218,9 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 10,),
+                  const SizedBox(
+                    height: 10,
+                  ),
 
                   // Row of containers with images and titles
                   SingleChildScrollView(
@@ -229,7 +233,7 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Container(
-                                width: 100,  // Square width
+                                width: 100, // Square width
                                 height: 100, // Square height
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(12),
@@ -240,7 +244,8 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
                                     borderRadius: BorderRadius.circular(12),
                                     child: Image.asset(
                                       'assets/barbel.jpg', // Replace with actual image URLs
-                                      fit: BoxFit.contain,  // Ensures the image fits inside the square
+                                      fit: BoxFit
+                                          .contain, // Ensures the image fits inside the square
                                     ),
                                   ),
                                 ),
@@ -260,19 +265,21 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
                     ),
                   ),
 
-                  SizedBox(height: 20,),
+                  const SizedBox(
+                    height: 20,
+                  ),
 
-                  Row(
+                  const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
+                      Text(
                         "Exercises",
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
-                      const Text(
+                      Text(
                         "3 Sets",
                         style: TextStyle(
                           fontSize: 12,
@@ -281,7 +288,9 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 10,),
+                  const SizedBox(
+                    height: 10,
+                  ),
 
                   const Text(
                     "Set 1",
@@ -291,10 +300,10 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
                     ),
                   ),
 
-
                   //Exercise cards
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 30),
                     child: Column(
                       children: [
                         ExerciseCard(
@@ -334,7 +343,8 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
                   ),
 
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 30),
                     child: Column(
                       children: [
                         ExerciseCard(
@@ -375,9 +385,7 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
                             borderRadius: BorderRadius.circular(99),
                           ),
                         ),
-                        onPressed: () =>{
-
-                        },
+                        onPressed: () => {},
                         child: const Text(
                           'Start',
                           style: TextStyle(

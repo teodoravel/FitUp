@@ -1,8 +1,16 @@
-// gym_map_page.dart
 import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
 
-class GymMapPage extends StatelessWidget {
+class GymMapPage extends StatefulWidget {
   const GymMapPage({super.key});
+
+  @override
+  State<GymMapPage> createState() => _GymMapPageState();
+}
+
+class _GymMapPageState extends State<GymMapPage> {
+  final MapController _mapController = MapController();
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +20,8 @@ class GymMapPage extends StatelessWidget {
           children: [
             // Purple top area
             Container(
-              padding: const EdgeInsets.only(left: 30, right: 30, top: 20, bottom: 20),
+              padding: const EdgeInsets.only(
+                  left: 30, right: 30, top: 20, bottom: 20),
               decoration: const BoxDecoration(
                 color: Color(0xFF5C315B),
                 borderRadius: BorderRadius.only(
@@ -50,7 +59,7 @@ class GymMapPage extends StatelessWidget {
               ),
             ),
 
-            // Map placeholder
+            // Real map
             Expanded(
               child: Container(
                 margin: const EdgeInsets.all(20),
@@ -58,8 +67,38 @@ class GymMapPage extends StatelessWidget {
                   color: Colors.grey.shade300,
                   borderRadius: BorderRadius.circular(20),
                 ),
-                child: const Center(
-                  child: Text('Map Placeholder'),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: FlutterMap(
+                    mapController: _mapController,
+                    options: MapOptions(
+                      center:
+                          const LatLng(42.00378, 21.41103), // example coords
+                      zoom: 16.0,
+                    ),
+                    children: [
+                      TileLayer(
+                        urlTemplate:
+                            'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                        subdomains: const ['a', 'b', 'c'],
+                        userAgentPackageName: 'com.example.fitup',
+                      ),
+                      MarkerLayer(
+                        markers: [
+                          Marker(
+                            point: const LatLng(42.00378, 21.41103),
+                            width: 40,
+                            height: 40,
+                            builder: (context) => const Icon(
+                              Icons.location_on,
+                              color: Colors.red,
+                              size: 40,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

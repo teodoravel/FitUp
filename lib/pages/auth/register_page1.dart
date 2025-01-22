@@ -67,8 +67,8 @@ class _RegisterPage1State extends State<RegisterPage1> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 20),
-              Center(
-                child: const Text(
+              const Center(
+                child: Text(
                   'Create an Account',
                   style: TextStyle(
                     color: Color(0xFF1D1517),
