@@ -1,321 +1,415 @@
 import 'package:flutter/material.dart';
 
-class WorkoutDetailsPage extends StatelessWidget {
+import '../../widgets/exercise_card.dart';
+
+class WorkoutDetailsPage extends StatefulWidget {
   const WorkoutDetailsPage({super.key});
+
+  @override
+  State<WorkoutDetailsPage> createState() => _WorkoutDetailsPageState();
+}
+
+class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
+  String _selectedDifficulty = 'Beginner';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        // Purple top bar
-        body: Stack(
-        children: [
-        // 1) Purple top background
-        Container(
-        width: double.infinity,
-        height: 300,
-        decoration: const BoxDecoration(
-        color: Color(0xFF5C315B),
-    borderRadius: BorderRadius.only(
-    bottomLeft: Radius.circular(40),
-    bottomRight: Radius.circular(40),
-    ),
-    ),
-    ),
-    // 2) Scroll content
-    SafeArea(
-    child: Column(
-    children: [
-    // Top row: back arrow + page name
-    Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-    child: Row(
-    children: [
-    // back arrow
-    Container(
-    width: 32,
-    height: 32,
-    decoration: BoxDecoration(
-    color: Colors.white.withOpacity(0.8),
-    borderRadius: BorderRadius.circular(8),
-    ),
-    child: IconButton(
-    icon: const Icon(Icons.arrow_back_ios, size: 16),
-    color: Colors.black,
-    onPressed: () => Navigator.pop(context),
-    ),
-    ),
-    const SizedBox(width: 16),
-    const Text(
-    'Fullbody Workout',
-    style: TextStyle(
-    color: Colors.white,
-    fontSize: 18,
-    fontFamily: 'Poppins',
-    fontWeight: FontWeight.w700,
-    ),
-    ),
-    const Spacer(),
-    // Possibly a 3-dot menu or heart icon
-    IconButton(
-    icon: const Icon(Icons.favorite_border, color: Colors.white),
-    onPressed: () {},
-    ),
-    ],
-    ),
-    ),
-    // 3) White area with details
-    Expanded(
-    child: Container(
-    width: double.infinity,
-    margin: const EdgeInsets.only(top: 10),
-    decoration: const BoxDecoration(
-    color: Colors.white,
-    borderRadius: BorderRadius.only(
-    topLeft: Radius.circular(40),
-    topRight: Radius.circular(40),
-    ),
-    ),
-    child: SingleChildScrollView(
-    padding: const EdgeInsets.all(24),
-    child: Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-    // Some row with “Schedule Workout” & “Difficulty”
-    Container(
-    padding: const EdgeInsets.symmetric(vertical: 8),
-    child: Row(
-    children: [
-    Expanded(
-    child: ElevatedButton(
-    onPressed: () {
-    // e.g. Navigator.pushNamed(context, '/addSchedule');
-    },
-    style: ElevatedButton.styleFrom(
-    backgroundColor: const Color(0xFFE9FFE9),
-    shape: RoundedRectangleBorder(
-    borderRadius: BorderRadius.circular(14),
-    ),
-    ),
-    child: const Text(
-    'Schedule Workout',
-    style: TextStyle(
-    color: Color(0xFF5C315B),
-    fontWeight: FontWeight.w600,
-    ),
-    ),
-    ),
-    ),
-    const SizedBox(width: 10),
-    Expanded(
-    child: ElevatedButton(
-    onPressed: () {
-    // e.g. Difficulty pressed
-    },
-    style: ElevatedButton.styleFrom(
-    backgroundColor: const Color(0xFFF7F8F8),
-    shape: RoundedRectangleBorder(
-    borderRadius: BorderRadius.circular(14),
-    ),
-    ),
-    child: const Text(
-    'Difficulty: Beginner',
-    style: TextStyle(
-    color: Colors.black87,
-    fontWeight: FontWeight.w500,
-    ),
-    ),
-    ),
-    ),
-    ],
-    ),
-    ),
-    const SizedBox(height: 8),
-
-    // "You’ll Need" section
-    const Text(
-    'You’ll Need',
-    style: TextStyle(
-    fontSize: 16,
-    fontWeight: FontWeight.w600,
-    fontFamily: 'Poppins',
-    ),
-    ),
-    const SizedBox(height: 8),
-    SizedBox(
-    height: 80,
-    child: ListView(
-    scrollDirection: Axis.horizontal,
-    children: [
-    // Example item
-    _needItem(
-    icon: Icons.sports_gymnastics,
-    label: 'Barbell',
-    ),
-    _needItem(
-    icon: Icons.shop_2_outlined,
-    label: 'Skipping Rope',
-    ),
-    _needItem(
-      icon: Icons.local_drink,
-      label: 'Bottle',
-    ),
-    ],
-    ),
-    ),
-      const SizedBox(height: 20),
-
-      // "Exercises" section
-      const Text(
-        'Exercises',
-        style: TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.w600,
-          fontFamily: 'Poppins',
-        ),
-      ),
-      const SizedBox(height: 8),
-      // For mock: we’ll do two sets.
-      const Text(
-        'Set 1',
-        style: TextStyle(
-          fontSize: 14,
-          fontWeight: FontWeight.w500,
-          fontFamily: 'Poppins',
-        ),
-      ),
-      const SizedBox(height: 8),
-      _exerciseItem('Warm Up', '5min'),
-      _exerciseItem('Jumping Jack', '30sec'),
-      _exerciseItem('Skipping', '1min'),
-      _exerciseItem('Squats', '12x'),
-      _exerciseItem('Arm Raises', '10x'),
-      _exerciseItem('Rest and Drink', '30sec'),
-      const SizedBox(height: 16),
-      const Text(
-        'Set 2',
-        style: TextStyle(
-          fontSize: 14,
-          fontWeight: FontWeight.w500,
-          fontFamily: 'Poppins',
-        ),
-      ),
-      const SizedBox(height: 8),
-      _exerciseItem('Incline Push-Ups', '10x'),
-      _exerciseItem('Push-Ups', '10x'),
-      _exerciseItem('Skipping', '30sec'),
-      _exerciseItem('Cobra Stretch', '20sec'),
-      const SizedBox(height: 40),
-
-      // "Start Workout" big button
-      SizedBox(
-        width: double.infinity,
-        height: 60,
-        child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFF5C315B),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(99),
-            ),
-          ),
-          onPressed: () {
-            // Possibly go to /startWorkout
-            Navigator.pushNamed(context, '/startWorkout');
-          },
-          child: const Text(
-            'Start Workout',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 16,
-              fontFamily: 'Poppins',
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-        ),
-      ),
-      const SizedBox(height: 20),
-    ],
-    ),
-    ),
-    ),
-    ),
-    ],
-    ),
-    ),
-        ],
-        ),
-    );
-  }
-
-  // "You’ll Need" widget
-  Widget _needItem({required IconData icon, required String label}) {
-    return Container(
-      width: 80,
-      margin: const EdgeInsets.only(right: 12),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(14),
-        boxShadow: const [
-          BoxShadow(
-            color: Color(0x11000000),
-            blurRadius: 4,
-            offset: Offset(0, 2),
-          )
-        ],
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(icon, size: 32, color: Colors.black54),
-          const SizedBox(height: 6),
-          Text(
-            label,
-            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
-          ),
-        ],
-      ),
-    );
-  }
-
-  // Single exercise item in the list
-  Widget _exerciseItem(String name, String detail) {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 5),
-      child: Row(
-        children: [
-          // image placeholder:
-          Container(
-            width: 40,
-            height: 40,
-            margin: const EdgeInsets.only(right: 10),
-            color: Colors.grey.shade300,
-            child: const Icon(Icons.image, color: Colors.grey),
-          ),
-          // name + detail
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  name,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontFamily: 'Poppins',
-                    fontWeight: FontWeight.w500,
-                  ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            // 1) Purple top area with back arrow
+            Container(
+              padding: const EdgeInsets.only(
+                  left: 20, right: 20, top: 40, bottom: 20),
+              decoration: const BoxDecoration(
+                color: Color(0xB65C315B),
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(20),
+                  bottomRight: Radius.circular(20),
                 ),
-                Text(
-                  detail,
-                  style: const TextStyle(
-                    fontSize: 12,
-                    color: Colors.grey,
+              ),
+              child: Row(
+                children: [
+                  // Box for the back arrow
+                  Container(
+                    width: 32,
+                    height: 32,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFF7F8F8),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    // Real arrow IconButton
+                    child: IconButton(
+                      icon: const Icon(Icons.arrow_back_ios, size: 16),
+                      color: Colors.black,
+                      onPressed: () => Navigator.pop(context),
+                    ),
                   ),
-                ),
-              ],
+                  const SizedBox(width: 16),
+                ],
+              ),
             ),
-          ),
-          // Checkbox or circle?
-          const Icon(Icons.radio_button_off, color: Colors.grey),
-        ],
+
+            // 2) White container with workout details
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Workout title and details
+                  const Text(
+                    "Fullbody workout",
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  const Text(
+                    "11 Exercises | 32mins | 320 Calories Burn",
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+
+                  const SizedBox(height: 40),
+
+                  // Schedule workout butto
+                  Container(
+                    width: double.infinity,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                      gradient: const LinearGradient(
+                        begin: Alignment.centerRight,
+                        end: Alignment.centerLeft,
+                        colors: [
+                          Color(0x8000ff66), // Reduced opacity green
+                          Color(0x8000efff), // Reduced opacity blue
+                        ],
+                      ),
+                    ),
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(context, '/addSchedule');
+                      },
+                      child: const Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.calendar_today,
+                                color: Color(0xFF6B6B6B),
+                                size: 18,
+                              ),
+                              SizedBox(width: 8),
+                              Text(
+                                "Schedule Workout",
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                  color: Color(0xFF6B6B6B),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Text(
+                            "5/27, 09:00 AM",
+                            style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400,
+                                color: Color(0xFF6B6B6B)),
+                          ),
+                          Icon(
+                            Icons.arrow_forward_ios,
+                            color: Color(0xFF6B6B6B),
+                            size: 18,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(height: 20),
+
+                  // Difficulty button
+                  // Container with DropdownButton for difficulty
+                  Container(
+                    width: double.infinity,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                      color: const Color(0x805c315b), // Reduced opacity purple
+                    ),
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Row(
+                          children: [
+                            Icon(
+                              Icons.swap_vert,
+                              color: Color(0xFF6B6B6B),
+                              size: 18,
+                            ),
+                            SizedBox(width: 8),
+                            Text(
+                              "Difficulty",
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                                color: Color(0xFF6B6B6B),
+                              ),
+                            ),
+                          ],
+                        ),
+                        DropdownButton<String>(
+                          value: _selectedDifficulty,
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              _selectedDifficulty = newValue!;
+                            });
+                          },
+                          icon: const Icon(
+                            Icons.arrow_forward_ios,
+                            color: Color(0xFF6B6B6B),
+                            size: 18,
+                          ),
+                          dropdownColor: const Color(
+                              0xFFF7F8F8), // Background color of dropdown
+                          items: <String>[
+                            'Beginner',
+                            'Intermediate',
+                            'Advanced'
+                          ].map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(
+                                value,
+                                style: const TextStyle(
+                                  color: Color(0xFF6B6B6B),
+                                ),
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  const SizedBox(height: 40),
+
+                  // Row with "You’ll Need" and "5 Items"
+                  const Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "You’ll Need",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      Text(
+                        "5 Items",
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+
+                  // Row of containers with images and titles
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: List.generate(5, (index) {
+                        return Padding(
+                          padding: const EdgeInsets.only(right: 16),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                width: 100, // Square width
+                                height: 100, // Square height
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                  color: Colors.grey[300], // Gray background
+                                ),
+                                child: Center(
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(12),
+                                    child: Image.asset(
+                                      'assets/barbel.jpg', // Replace with actual image URLs
+                                      fit: BoxFit
+                                          .contain, // Ensures the image fits inside the square
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              const Text(
+                                "Item Title", // Replace with dynamic titles
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      }),
+                    ),
+                  ),
+
+                  const SizedBox(
+                    height: 20,
+                  ),
+
+                  const Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Exercises",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      Text(
+                        "3 Sets",
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+
+                  const Text(
+                    "Set 1",
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+
+                  //Exercise cards
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 30),
+                    child: Column(
+                      children: [
+                        ExerciseCard(
+                          imageUrl: 'assets/pushup.jpg',
+                          exerciseName: 'Jumping Jacks',
+                          reps: '10 reps',
+                          onTap: () {
+                            // Handle tap, navigate to details page
+                          },
+                        ),
+                        ExerciseCard(
+                          imageUrl: 'assets/squat.jpg',
+                          exerciseName: 'Squats',
+                          reps: '15 reps',
+                          onTap: () {
+                            // Handle tap, navigate to details page
+                          },
+                        ),
+                        ExerciseCard(
+                          imageUrl: 'assets/plank.jpg',
+                          exerciseName: 'Plank',
+                          reps: '1 min',
+                          onTap: () {
+                            // Handle tap, navigate to details page
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  const Text(
+                    "Set 2",
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 30),
+                    child: Column(
+                      children: [
+                        ExerciseCard(
+                          imageUrl: 'assets/pushup.jpg',
+                          exerciseName: 'Jumping Jacks',
+                          reps: '10 reps',
+                          onTap: () {
+                            Navigator.pushNamed(context, '/workoutDetails2');
+                          },
+                        ),
+                        ExerciseCard(
+                          imageUrl: 'assets/squat.jpg',
+                          exerciseName: 'Squats',
+                          reps: '15 reps',
+                          onTap: () {
+                            // Handle tap, navigate to details page
+                          },
+                        ),
+                        ExerciseCard(
+                          imageUrl: 'assets/plank.jpg',
+                          exerciseName: 'Plank',
+                          reps: '1 min',
+                          onTap: () {
+                            // Handle tap, navigate to details page
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                  Center(
+                    child: SizedBox(
+                      width: 315,
+                      height: 60,
+                      child: TextButton(
+                        style: TextButton.styleFrom(
+                          backgroundColor: const Color(0xFF5C315B),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(99),
+                          ),
+                        ),
+                        onPressed: () => {
+                          Navigator.pushNamed(context, '/startWorkout')
+                        },
+                        child: const Text(
+                          'Start',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontFamily: 'Poppins',
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

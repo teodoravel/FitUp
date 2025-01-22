@@ -14,7 +14,7 @@ class TrainerDetailsPage extends StatelessWidget {
             Container(
               padding: const EdgeInsets.only(left: 30, right: 30, top: 20, bottom: 20),
               decoration: const BoxDecoration(
-                color: Color(0xFF5C315B),
+                color: Color(0xB65C315B),
                 borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(40),
                   bottomRight: Radius.circular(40),
@@ -41,7 +41,7 @@ class TrainerDetailsPage extends StatelessWidget {
                     'Trainer 1',
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 16,
+                      fontSize: 20, // Increased size
                       fontFamily: 'Poppins',
                       fontWeight: FontWeight.w700,
                     ),
@@ -54,23 +54,52 @@ class TrainerDetailsPage extends StatelessWidget {
               child: SingleChildScrollView(
                 padding: EdgeInsets.all(20),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start, // Left alignment for all text
                   children: [
                     SizedBox(height: 20),
-                    // Big icon placeholder
-                    CircleAvatar(
-                      radius: 60,
-                      backgroundColor: Colors.grey,
-                      child: Icon(Icons.person, size: 60),
+                    // Center the CircleAvatar
+                    Center(
+                      child: CircleAvatar(
+                        radius: 80,
+                        backgroundColor: Colors.grey,
+                        child: Icon(
+                          Icons.person_outline,
+                          size: 80,
+                          color: Colors.black,
+                        ),
+                      ),
                     ),
                     SizedBox(height: 20),
                     Text(
-                      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed et...',
-                      textAlign: TextAlign.center,
+                      'Lorem ipsum dolor sit amet, consectetur\n'
+                          'adipiscing elit, sed do eiusmod tempor\n'
+                          'incididunt ut labore et dolore magna\n'
+                          'aliqua. Ut enim ad minim veniam, quis\n'
+                          'nostrud exercitation ullamco laboris nisi\n'
+                          'ut aliquip ex ea commodo consequat.\n'
+                          'Duis aute irure dolor in',
+                      style: TextStyle(
+                        fontSize: 18, // Increased font size for all text
+                        fontFamily: 'Poppins',
+                      ),
                     ),
-                    SizedBox(height: 20),
+                    SizedBox(height: 40),
                     Text(
-                      'Rating: ★★★★☆\nContact: 555 555 555\ntrainer@email.com',
-                      textAlign: TextAlign.center,
+                      'Rating: ★★★★☆',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold, // Bold rating
+                        fontFamily: 'Poppins',
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    Text(
+                      'Contact: 555 555 555\n\ttrainer@email.com',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold, // Bold contact info
+                        fontFamily: 'Poppins',
+                      ),
                     ),
                   ],
                 ),

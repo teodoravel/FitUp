@@ -1,3 +1,4 @@
+import 'package:fitup/pages/workout_details/workout_details_page.dart';
 import 'package:flutter/material.dart';
 import 'pages/start/introduction_page.dart';
 import 'pages/start/start_page.dart';
@@ -34,7 +35,7 @@ class FitUpApp extends StatelessWidget {
       theme: ThemeData(primarySwatch: Colors.purple),
 
       // Choose your initial screen
-      home: const Introduction(),
+      home: const WorkoutSchedulePage(),
 
       routes: {
         // Intro & Start

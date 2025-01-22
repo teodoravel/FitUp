@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 // If using table_calendar:
 import 'package:table_calendar/table_calendar.dart';
-
 class WorkoutSchedulePage extends StatefulWidget {
   const WorkoutSchedulePage({super.key});
 
@@ -27,19 +26,10 @@ class _WorkoutSchedulePageState extends State<WorkoutSchedulePage> {
         child: Column(
           children: [
             // Calendar
-            const SizedBox(height: 20),
-            // Example heading
-            const Text(
-              'September 2025',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
             Container(
               margin: const EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: Colors.grey.shade200,
+                color: Colors.white,
                 borderRadius: BorderRadius.circular(20),
               ),
               child: TableCalendar(
@@ -68,7 +58,17 @@ class _WorkoutSchedulePageState extends State<WorkoutSchedulePage> {
               padding: EdgeInsets.symmetric(horizontal: 16),
               child: Align(
                 alignment: Alignment.centerLeft,
-                child: Text('14:00 - 15:00  |  Full body workout'),
+                child: Row(
+                  children: [
+                    CircleAvatar(
+                      backgroundColor: Color(0xFF5C315B),
+                      radius: 10, // Purple circle icon
+                      child: Icon(Icons.fitness_center, size: 12, color: Colors.white),
+                    ),
+                    SizedBox(width: 8),
+                    Text('14:00 - 15:00\nFull body workout', style: TextStyle(fontSize: 16)),
+                  ],
+                ),
               ),
             ),
             const SizedBox(height: 50),
@@ -76,11 +76,14 @@ class _WorkoutSchedulePageState extends State<WorkoutSchedulePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: const Color(0xFF5C315B),
+        backgroundColor: Color(0xFF5C315B),
         onPressed: () {
           Navigator.pushNamed(context, '/addSchedule');
         },
-        child: const Icon(Icons.add),
+        child: const Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
       ),
     );
   }

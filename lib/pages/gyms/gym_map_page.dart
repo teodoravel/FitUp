@@ -20,10 +20,9 @@ class _GymMapPageState extends State<GymMapPage> {
           children: [
             // Purple top area
             Container(
-              padding: const EdgeInsets.only(
-                  left: 30, right: 30, top: 20, bottom: 20),
+              padding: const EdgeInsets.only(left: 30, right: 30, top: 20, bottom: 20),
               decoration: const BoxDecoration(
-                color: Color(0xFF5C315B),
+                color: Color(0xB65C315B),
                 borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(40),
                   bottomRight: Radius.circular(40),
@@ -50,7 +49,7 @@ class _GymMapPageState extends State<GymMapPage> {
                     'Gyms',
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 16,
+                      fontSize: 20, // Increased size
                       fontFamily: 'Poppins',
                       fontWeight: FontWeight.w700,
                     ),

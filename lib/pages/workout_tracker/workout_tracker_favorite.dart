@@ -81,9 +81,19 @@ class WorkoutTrackerFavoritePage extends StatelessWidget {
                   // Gyms
                   _sectionTitle('Gyms'),
                   const SizedBox(height: 10),
-                  _favoriteCard(title: 'Gym 1'),
+                  _favoriteCard(
+                      title: 'Gym 1',
+                    onTap: () {
+                      Navigator.pushNamed(context, '/gymMap');
+                    }
+                  ),
                   const SizedBox(height: 12),
-                  _favoriteCard(title: 'Gym 2'),
+                  _favoriteCard(
+                      title: 'Gym 2',
+                      onTap: () {
+                        Navigator.pushNamed(context, '/gymMap');
+                      }
+                  ),
 
                   const SizedBox(height: 24),
                   // Trainers
