@@ -1,5 +1,7 @@
 # fitup
-
+Ana Janeska 211008
+Ana Sazdova 225121
+Teodora Veljanoska 223075
 A new Flutter project.
 
 ## Getting Started
