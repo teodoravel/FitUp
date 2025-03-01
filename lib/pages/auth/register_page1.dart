@@ -1,19 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
-/* A regex enforcing:
- - at least one uppercase [A-Z]
- - at least one digit \d
- - at least one special char [^A-Za-z0-9] or a curated set
- - at least 8 chars total
- - no whitespace */
-
+/* The same password/email regex as in your code */
 final RegExp _passwordRegex =
     RegExp(r'^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9])[^\s]{8,}$');
-// Basic email check
 final RegExp _emailRegex = RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$');
 
 class RegisterPage1 extends StatefulWidget {
   const RegisterPage1({super.key});
+
   @override
   State<RegisterPage1> createState() => _RegisterPage1State();
 }
@@ -23,18 +19,13 @@ class _RegisterPage1State extends State<RegisterPage1> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
-  void _onRegisterPressed() {
+  Future<void> _onRegisterPressed() async {
     final fullName = _fullNameController.text.trim();
     final email = _emailController.text.trim();
     final password = _passwordController.text;
 
-    // Simple checks
     if (fullName.isEmpty) {
       _showSnackBar('Please enter your full name');
-      return;
-    }
-    if (email.isEmpty) {
-      _showSnackBar('Please enter your email');
       return;
     }
     if (!_emailRegex.hasMatch(email)) {
@@ -47,7 +38,33 @@ class _RegisterPage1State extends State<RegisterPage1> {
       );
       return;
     }
-    Navigator.pushNamed(context, '/register2');
+
+    try {
+      final uri = Uri.parse('http://localhost:3000/api/register');
+      final response = await http.post(
+        uri,
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode({
+          'fullName': fullName,
+          'email': email,
+          'password': password,
+        }),
+      );
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        if (data['success'] == true) {
+          // proceed to next page
+          Navigator.pushNamed(context, '/register2');
+        } else {
+          _showSnackBar(data['error'] ?? 'Registration error');
+        }
+      } else {
+        final data = json.decode(response.body);
+        _showSnackBar(data['error'] ?? 'Registration failed');
+      }
+    } catch (e) {
+      _showSnackBar('Server not reachable? $e');
+    }
   }
 
   void _showSnackBar(String msg) {
@@ -89,8 +106,8 @@ class _RegisterPage1State extends State<RegisterPage1> {
                   hintText: 'Full Name',
                   filled: true,
                   hintStyle: const TextStyle(
-                    color: Color(0xFFB0B0B0), // Lighter gray for fainter hint text
-                    fontWeight: FontWeight.w400, // Thinner font weight
+                    color: Color(0xFFB0B0B0),
+                    fontWeight: FontWeight.w400,
                   ),
                   fillColor: const Color(0xFFF7F8F8),
                   border: OutlineInputBorder(
@@ -110,8 +127,8 @@ class _RegisterPage1State extends State<RegisterPage1> {
                   hintText: 'Email',
                   filled: true,
                   hintStyle: const TextStyle(
-                    color: Color(0xFFB0B0B0), // Lighter gray for fainter hint text
-                    fontWeight: FontWeight.w400, // Thinner font weight
+                    color: Color(0xFFB0B0B0),
+                    fontWeight: FontWeight.w400,
                   ),
                   fillColor: const Color(0xFFF7F8F8),
                   border: OutlineInputBorder(
@@ -131,8 +148,8 @@ class _RegisterPage1State extends State<RegisterPage1> {
                   hintText: 'Password',
                   filled: true,
                   hintStyle: const TextStyle(
-                    color: Color(0xFFB0B0B0), // Lighter gray for fainter hint text
-                    fontWeight: FontWeight.w400, // Thinner font weight
+                    color: Color(0xFFB0B0B0),
+                    fontWeight: FontWeight.w400,
                   ),
                   fillColor: const Color(0xFFF7F8F8),
                   border: OutlineInputBorder(
@@ -185,7 +202,7 @@ class _RegisterPage1State extends State<RegisterPage1> {
                       "Or",
                       style: TextStyle(
                         fontSize: 14,
-                        fontWeight: FontWeight.w600, // Bolder text
+                        fontWeight: FontWeight.w600,
                         fontFamily: 'Poppins',
                         color: Colors.grey[700],
                       ),
@@ -204,21 +221,20 @@ class _RegisterPage1State extends State<RegisterPage1> {
               Center(
                 child: GestureDetector(
                   onTap: () {
-                    // Handle Google sign-in action here
                     print('Google sign-in clicked');
                   },
                   child: Container(
                     width: 50,
                     height: 50,
                     decoration: BoxDecoration(
-                      border: Border.all(width: 0.8, color: const Color(0xFFDDD9DA)),
+                      border: Border.all(
+                          width: 0.8, color: const Color(0xFFDDD9DA)),
                       borderRadius: BorderRadius.circular(14),
                     ),
-                    child: Image.asset('assets/Login-Social-Media.jpg')
+                    child: Image.asset('assets/Login-Social-Media.jpg'),
                   ),
                 ),
               ),
-              
               const SizedBox(height: 20),
 
               // Already have an account?

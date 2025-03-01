@@ -27,7 +27,6 @@ class ExerciseCard extends StatelessWidget {
         ),
         child: Row(
           children: [
-            // Image on the left
             Container(
               width: 60,
               height: 60,
@@ -35,15 +34,12 @@ class ExerciseCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8),
                 color: Colors.grey[300],
                 image: const DecorationImage(
-                  image: AssetImage(
-                      'assets/barbel.jpg'), // Replace with actual image path
+                  image: AssetImage('assets/barbel.jpg'),
                   fit: BoxFit.cover,
                 ),
               ),
             ),
             const SizedBox(width: 16),
-
-            // Exercise name and reps
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -67,8 +63,6 @@ class ExerciseCard extends StatelessWidget {
                 ],
               ),
             ),
-
-            // Arrow icon leading to details page
             const Icon(
               Icons.arrow_forward_ios,
               size: 18,

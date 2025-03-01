@@ -18,16 +18,14 @@ class _RegisterPage2State extends State<RegisterPage2> {
   final _weightController = TextEditingController();
   final _heightController = TextEditingController();
 
-  // Realistic bounds for height & weight
-  static const double minHeight = 50; // e.g. 50 cm
-  static const double maxHeight = 250; // e.g. 250 cm
-  static const double minWeight = 3; // e.g. 3 kg
-  static const double maxWeight = 300; // e.g. 300 kg
+  static const double minHeight = 50;
+  static const double maxHeight = 250;
+  static const double minWeight = 3;
+  static const double maxWeight = 300;
 
   Future<void> _pickDOB() async {
     final now = DateTime.now();
-    final oldestYoung =
-        DateTime(now.year - 13, now.month, now.day); // at least 13
+    final oldestYoung = DateTime(now.year - 13, now.month, now.day);
     final oldestAllowed = DateTime(now.year - 100, now.month, now.day);
 
     final init = _selectedDOB ?? DateTime(now.year - 20);
@@ -46,7 +44,6 @@ class _RegisterPage2State extends State<RegisterPage2> {
   }
 
   void _onNextPressed() {
-    // Check DOB
     if (_selectedDOB == null) {
       _showSnackBar('Please select your date of birth');
       return;
@@ -67,7 +64,6 @@ class _RegisterPage2State extends State<RegisterPage2> {
     final weightVal = double.parse(weightText);
     final heightVal = double.parse(heightText);
 
-    // realistic checks
     if (weightVal < minWeight || weightVal > maxWeight) {
       _showSnackBar('Weight must be between $minWeight kg and $maxWeight kg');
       return;
@@ -88,6 +84,7 @@ class _RegisterPage2State extends State<RegisterPage2> {
   void _showSnackBar(String msg) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
   }
+
   bool _isMetric = true;
 
   @override
@@ -144,7 +141,6 @@ class _RegisterPage2State extends State<RegisterPage2> {
                     _selectedGender = newVal!;
                   });
                 },
-
                 decoration: InputDecoration(
                   prefixIcon: const Icon(Icons.people_outline),
                   labelText: 'Gender',
@@ -158,7 +154,7 @@ class _RegisterPage2State extends State<RegisterPage2> {
               ),
               const SizedBox(height: 20),
 
-              // DOB (tap to pick)
+              // DOB
               TextField(
                 controller: _dobController,
                 readOnly: true,
@@ -177,7 +173,6 @@ class _RegisterPage2State extends State<RegisterPage2> {
               const SizedBox(height: 20),
 
               // Weight
-              // Weight field with toggle button
               Row(
                 children: [
                   Expanded(

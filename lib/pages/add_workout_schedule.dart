@@ -28,6 +28,7 @@ class _AddWorkoutSchedulePageState extends State<AddWorkoutSchedulePage> {
   String _selectedDifficulty = 'Beginner';
 
   // For Custom Repetitions text field:
+  // ignore: unused_field
   String _customReps = '';
 
   @override
@@ -196,50 +197,51 @@ class _AddWorkoutSchedulePageState extends State<AddWorkoutSchedulePage> {
       );
     } else if (title == 'Difficulty') {
       return Container(
-          height: 50,
-          decoration: BoxDecoration(
+        height: 50,
+        decoration: BoxDecoration(
           color: const Color(0xFFF7F8F8),
-    borderRadius: BorderRadius.circular(16),
-    ),
-    padding: const EdgeInsets.symmetric(horizontal: 16),
-    child: Row(
-    children: [
-    Text(
-    title,
-    style: const TextStyle(
-    color: Color(0xFFB6B4C1),
-    fontSize: 12,
-    fontFamily: 'Poppins',
-    fontWeight: FontWeight.w400,
-    height: 1.50,
-    ),
-    ),
-    const Spacer(),
-    DropdownButton<String>(
-    value: _selectedDifficulty,
-    underline: const SizedBox(),
-    items: _difficultyOptions.map((option) {
-    return DropdownMenuItem(
-    value: option,
-    child: Text(
-    option,style: const TextStyle(
-      color: Color(0xFFA5A3AF),
-      fontSize: 10,
-      fontFamily: 'Poppins',
-      fontWeight: FontWeight.w400,
-      height: 1.50,
-    ),
-    ),
-    );
-    }).toList(),
-      onChanged: (newValue) {
-        setState(() {
-          _selectedDifficulty = newValue!;
-        });
-      },
-    ),
-    ],
-    ),
+          borderRadius: BorderRadius.circular(16),
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Row(
+          children: [
+            Text(
+              title,
+              style: const TextStyle(
+                color: Color(0xFFB6B4C1),
+                fontSize: 12,
+                fontFamily: 'Poppins',
+                fontWeight: FontWeight.w400,
+                height: 1.50,
+              ),
+            ),
+            const Spacer(),
+            DropdownButton<String>(
+              value: _selectedDifficulty,
+              underline: const SizedBox(),
+              items: _difficultyOptions.map((option) {
+                return DropdownMenuItem(
+                  value: option,
+                  child: Text(
+                    option,
+                    style: const TextStyle(
+                      color: Color(0xFFA5A3AF),
+                      fontSize: 10,
+                      fontFamily: 'Poppins',
+                      fontWeight: FontWeight.w400,
+                      height: 1.50,
+                    ),
+                  ),
+                );
+              }).toList(),
+              onChanged: (newValue) {
+                setState(() {
+                  _selectedDifficulty = newValue!;
+                });
+              },
+            ),
+          ],
+        ),
       );
     } else if (title == 'Custom Repetitions') {
       return Container(
