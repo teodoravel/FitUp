@@ -1,5 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+// ignore_for_file: deprecated_member_use
 
 class CustomCard extends StatelessWidget {
   final String title;
@@ -28,7 +28,6 @@ class CustomCard extends StatelessWidget {
       ),
       child: Stack(
         children: [
-          // Title + Subtitle
           Positioned(
             left: 20,
             top: 20,
@@ -59,12 +58,11 @@ class CustomCard extends StatelessWidget {
               ],
             ),
           ),
-          // "View more" button
           Positioned(
             left: 20,
             bottom: 15,
             child: GestureDetector(
-              onTap: onButtonPressed, // Button navigation
+              onTap: onButtonPressed,
               child: Container(
                 width: 94,
                 height: 35,
@@ -86,7 +84,6 @@ class CustomCard extends StatelessWidget {
               ),
             ),
           ),
-          // Circular image on the right side
           Positioned(
             right: 20,
             top: 20,

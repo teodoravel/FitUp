@@ -8,7 +8,6 @@ class AccountPage extends StatefulWidget {
 }
 
 class _AccountPageState extends State<AccountPage> {
-  // Properly formatted times:
   final List<String> _workoutOptions = [
     '10 min',
     '30 min',
@@ -20,14 +19,13 @@ class _AccountPageState extends State<AccountPage> {
     '3h 30min',
     '4h',
   ];
-  String _selectedWorkout = '1h'; // default choice
+  String _selectedWorkout = '1h';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: Container(
-          // Same style as Profile: fill screen, white background, round corners
           width: double.infinity,
           decoration: BoxDecoration(
             color: Colors.white,
@@ -38,7 +36,7 @@ class _AccountPageState extends State<AccountPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Top row: back arrow + "Account Details"
+                // Top row
                 Row(
                   children: [
                     IconButton(
@@ -60,7 +58,6 @@ class _AccountPageState extends State<AccountPage> {
                   ],
                 ),
                 const SizedBox(height: 10),
-
                 Divider(color: Colors.grey.shade300),
                 const ListTile(
                   title: Text(
@@ -90,7 +87,6 @@ class _AccountPageState extends State<AccountPage> {
                   ),
                 ),
                 Divider(color: Colors.grey.shade300),
-
                 const ListTile(
                   title: Text(
                     'Gender',
@@ -119,7 +115,6 @@ class _AccountPageState extends State<AccountPage> {
                   ),
                 ),
                 Divider(color: Colors.grey.shade300),
-
                 const ListTile(
                   title: Text(
                     'Age',
@@ -148,7 +143,6 @@ class _AccountPageState extends State<AccountPage> {
                   ),
                 ),
                 Divider(color: Colors.grey.shade300),
-
                 const ListTile(
                   title: Text(
                     'Height',
@@ -177,7 +171,6 @@ class _AccountPageState extends State<AccountPage> {
                   ),
                 ),
                 Divider(color: Colors.grey.shade300),
-
                 const ListTile(
                   title: Text(
                     'Weight',

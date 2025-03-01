@@ -20,7 +20,8 @@ class _GymMapPageState extends State<GymMapPage> {
           children: [
             // Purple top area
             Container(
-              padding: const EdgeInsets.only(left: 30, right: 30, top: 20, bottom: 20),
+              padding: const EdgeInsets.only(
+                  left: 30, right: 30, top: 20, bottom: 20),
               decoration: const BoxDecoration(
                 color: Color(0xB65C315B),
                 borderRadius: BorderRadius.only(
@@ -30,12 +31,11 @@ class _GymMapPageState extends State<GymMapPage> {
               ),
               child: Row(
                 children: [
-                  // back arrow
                   Container(
                     width: 32,
                     height: 32,
                     decoration: BoxDecoration(
-                      color: const Color(0xFFF7F8F8),
+                      color: Color(0xFFF7F8F8),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: IconButton(
@@ -49,7 +49,7 @@ class _GymMapPageState extends State<GymMapPage> {
                     'Gyms',
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 20, // Increased size
+                      fontSize: 20,
                       fontFamily: 'Poppins',
                       fontWeight: FontWeight.w700,
                     ),
@@ -71,8 +71,7 @@ class _GymMapPageState extends State<GymMapPage> {
                   child: FlutterMap(
                     mapController: _mapController,
                     options: MapOptions(
-                      center:
-                          const LatLng(42.00378, 21.41103), // example coords
+                      center: const LatLng(42.00378, 21.41103),
                       zoom: 16.0,
                     ),
                     children: [

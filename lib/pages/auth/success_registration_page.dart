@@ -39,20 +39,17 @@ class SuccessRegistrationPage extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 250),
-
-                // Go To Login or Home
                 SizedBox(
                   width: 315,
                   height: 60,
                   child: TextButton(
                     style: TextButton.styleFrom(
-                      backgroundColor: const Color(0xFF5C315B),
+                      backgroundColor: Color(0xFF5C315B),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(99),
                       ),
                     ),
                     onPressed: () {
-                      // Typically go to login or home
                       Navigator.pushNamed(context, '/home');
                     },
                     child: const Text(

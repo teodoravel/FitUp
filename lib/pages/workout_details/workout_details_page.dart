@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../../widgets/exercise_card.dart';
 
 class WorkoutDetailsPage extends StatefulWidget {
@@ -18,7 +17,7 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // 1) Purple top area with back arrow
+            // Purple top area with back arrow
             Container(
               padding: const EdgeInsets.only(
                   left: 20, right: 20, top: 40, bottom: 20),
@@ -31,7 +30,6 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
               ),
               child: Row(
                 children: [
-                  // Box for the back arrow
                   Container(
                     width: 32,
                     height: 32,
@@ -39,7 +37,6 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
                       color: const Color(0xFFF7F8F8),
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    // Real arrow IconButton
                     child: IconButton(
                       icon: const Icon(Icons.arrow_back_ios, size: 16),
                       color: Colors.black,
@@ -50,14 +47,11 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
                 ],
               ),
             ),
-
-            // 2) White container with workout details
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Workout title and details
                   const Text(
                     "Fullbody workout",
                     style: TextStyle(
@@ -73,10 +67,8 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
                       fontWeight: FontWeight.w400,
                     ),
                   ),
-
                   const SizedBox(height: 40),
-
-                  // Schedule workout butto
+                  // schedule
                   Container(
                     width: double.infinity,
                     height: 50,
@@ -86,8 +78,8 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
                         begin: Alignment.centerRight,
                         end: Alignment.centerLeft,
                         colors: [
-                          Color(0x8000ff66), // Reduced opacity green
-                          Color(0x8000efff), // Reduced opacity blue
+                          Color(0x8000ff66),
+                          Color(0x8000efff),
                         ],
                       ),
                     ),
@@ -120,9 +112,10 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
                           Text(
                             "5/27, 09:00 AM",
                             style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w400,
-                                color: Color(0xFF6B6B6B)),
+                              fontSize: 12,
+                              fontWeight: FontWeight.w400,
+                              color: Color(0xFF6B6B6B),
+                            ),
                           ),
                           Icon(
                             Icons.arrow_forward_ios,
@@ -133,17 +126,14 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
                       ),
                     ),
                   ),
-
                   const SizedBox(height: 20),
-
-                  // Difficulty button
-                  // Container with DropdownButton for difficulty
+                  // difficulty
                   Container(
                     width: double.infinity,
                     height: 50,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(16),
-                      color: const Color(0x805c315b), // Reduced opacity purple
+                      color: const Color(0x805c315b),
                     ),
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Row(
@@ -179,8 +169,7 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
                             color: Color(0xFF6B6B6B),
                             size: 18,
                           ),
-                          dropdownColor: const Color(
-                              0xFFF7F8F8), // Background color of dropdown
+                          dropdownColor: const Color(0xFFF7F8F8),
                           items: <String>[
                             'Beginner',
                             'Intermediate',
@@ -200,10 +189,7 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
                       ],
                     ),
                   ),
-
                   const SizedBox(height: 40),
-
-                  // Row with "You’ll Need" and "5 Items"
                   const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -223,11 +209,7 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
                       ),
                     ],
                   ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-
-                  // Row of containers with images and titles
+                  const SizedBox(height: 10),
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: Row(
@@ -238,26 +220,25 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Container(
-                                width: 100, // Square width
-                                height: 100, // Square height
+                                width: 100,
+                                height: 100,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(12),
-                                  color: Colors.grey[300], // Gray background
+                                  color: Colors.grey[300],
                                 ),
                                 child: Center(
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(12),
                                     child: Image.asset(
-                                      'assets/barbel.jpg', // Replace with actual image URLs
-                                      fit: BoxFit
-                                          .contain, // Ensures the image fits inside the square
+                                      'assets/barbel.jpg',
+                                      fit: BoxFit.contain,
                                     ),
                                   ),
                                 ),
                               ),
                               const SizedBox(height: 8),
                               const Text(
-                                "Item Title", // Replace with dynamic titles
+                                "Item Title",
                                 style: TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.w500,
@@ -269,11 +250,7 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
                       }),
                     ),
                   ),
-
-                  const SizedBox(
-                    height: 20,
-                  ),
-
+                  const SizedBox(height: 20),
                   const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -293,10 +270,7 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
                       ),
                     ],
                   ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-
+                  const SizedBox(height: 10),
                   const Text(
                     "Set 1",
                     style: TextStyle(
@@ -304,8 +278,6 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
                       fontWeight: FontWeight.w500,
                     ),
                   ),
-
-                  //Exercise cards
                   Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 20, vertical: 30),
@@ -315,30 +287,23 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
                           imageUrl: 'assets/pushup.jpg',
                           exerciseName: 'Jumping Jacks',
                           reps: '10 reps',
-                          onTap: () {
-                            // Handle tap, navigate to details page
-                          },
+                          onTap: () {},
                         ),
                         ExerciseCard(
                           imageUrl: 'assets/squat.jpg',
                           exerciseName: 'Squats',
                           reps: '15 reps',
-                          onTap: () {
-                            // Handle tap, navigate to details page
-                          },
+                          onTap: () {},
                         ),
                         ExerciseCard(
                           imageUrl: 'assets/plank.jpg',
                           exerciseName: 'Plank',
                           reps: '1 min',
-                          onTap: () {
-                            // Handle tap, navigate to details page
-                          },
+                          onTap: () {},
                         ),
                       ],
                     ),
                   ),
-
                   const Text(
                     "Set 2",
                     style: TextStyle(
@@ -346,7 +311,6 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
                       fontWeight: FontWeight.w500,
                     ),
                   ),
-
                   Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 20, vertical: 30),
@@ -364,17 +328,13 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
                           imageUrl: 'assets/squat.jpg',
                           exerciseName: 'Squats',
                           reps: '15 reps',
-                          onTap: () {
-                            // Handle tap, navigate to details page
-                          },
+                          onTap: () {},
                         ),
                         ExerciseCard(
                           imageUrl: 'assets/plank.jpg',
                           exerciseName: 'Plank',
                           reps: '1 min',
-                          onTap: () {
-                            // Handle tap, navigate to details page
-                          },
+                          onTap: () {},
                         ),
                       ],
                     ),
@@ -390,8 +350,8 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
                             borderRadius: BorderRadius.circular(99),
                           ),
                         ),
-                        onPressed: () => {
-                          Navigator.pushNamed(context, '/startWorkout')
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/startWorkout');
                         },
                         child: const Text(
                           'Start',

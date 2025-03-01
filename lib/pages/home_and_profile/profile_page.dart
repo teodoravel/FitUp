@@ -18,7 +18,7 @@ class ProfilePage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Top row: back arrow + Profile title
+                // Top row
                 Row(
                   children: [
                     IconButton(
@@ -26,23 +26,19 @@ class ProfilePage extends StatelessWidget {
                       onPressed: () => Navigator.pop(context),
                     ),
                     const Spacer(),
-                    Center(
-                      child: const Text(
-                        'Profile',
-                        style: TextStyle(
-                          color: Color(0xFF1E1E1E),
-                          fontSize: 20,
-                          fontFamily: 'Poppins',
-                          fontWeight: FontWeight.w400,
-                        ),
+                    const Text(
+                      'Profile',
+                      style: TextStyle(
+                        color: Color(0xFF1E1E1E),
+                        fontSize: 20,
+                        fontFamily: 'Poppins',
+                        fontWeight: FontWeight.w400,
                       ),
                     ),
                     const Spacer(flex: 2),
                   ],
                 ),
                 const SizedBox(height: 10),
-
-                // Centered profile name
                 Center(
                   child: const Text(
                     'Stefani Warren',
@@ -55,22 +51,18 @@ class ProfilePage extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 20),
-
-                // Profile Picture Placeholder
                 Center(
                   child: CircleAvatar(
-                    radius: 60, // Adjust the size of the profile picture
-                    backgroundColor: Colors.grey.shade300, // Placeholder color
-                    child: Icon(
-                      Icons.person_outline_rounded, // Default icon when there's no picture
+                    radius: 60,
+                    backgroundColor: Colors.grey.shade300,
+                    child: const Icon(
+                      Icons.person_outline_rounded,
                       size: 50,
                       color: Colors.black,
                     ),
                   ),
                 ),
                 const SizedBox(height: 20),
-
-                // Example menu items
                 _menuTile(
                   icon: Icons.fitness_center,
                   title: 'Trainings',
@@ -81,7 +73,6 @@ class ProfilePage extends StatelessWidget {
                   icon: Icons.person_outline,
                   title: 'Account',
                   onTap: () {
-                    // This triggers the route to AccountPage
                     Navigator.pushNamed(context, '/account');
                   },
                 ),
@@ -104,7 +95,6 @@ class ProfilePage extends StatelessWidget {
                   onTap: () {},
                 ),
                 Divider(color: Colors.grey.shade300),
-
                 const Spacer(),
                 Center(
                   child: InkWell(

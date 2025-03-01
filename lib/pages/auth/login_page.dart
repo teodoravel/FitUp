@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -8,10 +10,9 @@ class LoginPage extends StatefulWidget {
   State<LoginPage> createState() => _LoginPageState();
 }
 
-// The same password regex used in register_page1
+// Regex from your original code
 final RegExp _passwordRegex =
     RegExp(r'^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9])[^\s]{8,}$');
-// Basic email check
 final RegExp _emailRegex = RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$');
 
 class _LoginPageState extends State<LoginPage> {
@@ -19,7 +20,7 @@ class _LoginPageState extends State<LoginPage> {
   final _passwordController = TextEditingController();
   bool _obscurePass = true;
 
-  void _onLoginPressed() {
+  Future<void> _onLoginPressed() async {
     final email = _emailController.text.trim();
     final password = _passwordController.text;
 
@@ -34,11 +35,32 @@ class _LoginPageState extends State<LoginPage> {
       return;
     }
 
-    if (LoginPage.justRegistered) {
-      LoginPage.justRegistered = false;
-      Navigator.pushNamed(context, '/success');
-    } else {
-      Navigator.pushNamed(context, '/home');
+    try {
+      final uri = Uri.parse('http://localhost:3000/api/login');
+      final response = await http.post(
+        uri,
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode({
+          'email': email,
+          'password': password,
+        }),
+      );
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        if (data['success'] == true) {
+          // If you had logic for "justRegistered", keep it if you want
+          Navigator.pushNamed(context, '/home');
+        } else {
+          // Maybe an 'error' field
+          _showSnackBar(data['error'] ?? 'Login failed');
+        }
+      } else {
+        // e.g. 401
+        final data = json.decode(response.body);
+        _showSnackBar(data['error'] ?? 'Login failed');
+      }
+    } catch (e) {
+      _showSnackBar('Server not reachable? $e');
     }
   }
 
@@ -79,8 +101,8 @@ class _LoginPageState extends State<LoginPage> {
                     hintText: 'Email',
                     filled: true,
                     hintStyle: const TextStyle(
-                      color: Color(0xFFB0B0B0), // Lighter gray for fainter hint text
-                      fontWeight: FontWeight.w400, // Thinner font weight
+                      color: Color(0xFFB0B0B0),
+                      fontWeight: FontWeight.w400,
                     ),
                     fillColor: const Color(0xFFF7F8F8),
                     border: OutlineInputBorder(
@@ -110,8 +132,8 @@ class _LoginPageState extends State<LoginPage> {
                     hintText: 'Password',
                     filled: true,
                     hintStyle: const TextStyle(
-                      color: Color(0xFFB0B0B0), // Lighter gray for fainter hint text
-                      fontWeight: FontWeight.w400, // Thinner font weight
+                      color: Color(0xFFB0B0B0),
+                      fontWeight: FontWeight.w400,
                     ),
                     fillColor: const Color(0xFFF7F8F8),
                     border: OutlineInputBorder(
@@ -189,7 +211,7 @@ class _LoginPageState extends State<LoginPage> {
                         "Or",
                         style: TextStyle(
                           fontSize: 14,
-                          fontWeight: FontWeight.w600, // Bolder text
+                          fontWeight: FontWeight.w600,
                           fontFamily: 'Poppins',
                           color: Colors.grey[700],
                         ),
@@ -208,17 +230,17 @@ class _LoginPageState extends State<LoginPage> {
                 Center(
                   child: GestureDetector(
                     onTap: () {
-                      // Handle Google sign-in action here
                       print('Google sign-in clicked');
                     },
                     child: Container(
-                        width: 50,
-                        height: 50,
-                        decoration: BoxDecoration(
-                          border: Border.all(width: 0.8, color: const Color(0xFFDDD9DA)),
-                          borderRadius: BorderRadius.circular(14),
-                        ),
-                        child: Image.asset('assets/Login-Social-Media.jpg')
+                      width: 50,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                            width: 0.8, color: const Color(0xFFDDD9DA)),
+                        borderRadius: BorderRadius.circular(14),
+                      ),
+                      child: Image.asset('assets/Login-Social-Media.jpg'),
                     ),
                   ),
                 ),

@@ -24,7 +24,6 @@ class StartPage extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 108),
-
               // Subheading
               const Text(
                 "Already have an\naccount?",
@@ -36,7 +35,6 @@ class StartPage extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 21),
-
               // Log in button
               SizedBox(
                 width: 315,
@@ -63,7 +61,6 @@ class StartPage extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 22),
-
               // "Or" text
               Row(
                 children: [
@@ -93,9 +90,7 @@ class StartPage extends StatelessWidget {
                   ),
                 ],
               ),
-
               const SizedBox(height: 22),
-
               // Create account button
               SizedBox(
                 width: 315,
