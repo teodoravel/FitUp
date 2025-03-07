@@ -1,7 +1,7 @@
-// workout_tracker_indoor.dart
-import 'package:flutter/material.dart';
+// lib/pages/workout_tracker/workout_tracker_indoor.dart
 
-import '../../widgets/custom_card.dart';
+import 'package:flutter/material.dart';
+import 'package:fitup/widgets/custom_card.dart';
 
 class WorkoutTrackerIndoorPage extends StatelessWidget {
   const WorkoutTrackerIndoorPage({super.key});
@@ -12,9 +12,9 @@ class WorkoutTrackerIndoorPage extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // 1) Purple top area
             Container(
-              padding: const EdgeInsets.only(left: 30, right: 30, top: 40, bottom: 20),
+              padding: const EdgeInsets.only(
+                  left: 30, right: 30, top: 40, bottom: 20),
               decoration: const BoxDecoration(
                 color: Color(0xB65C315B),
                 borderRadius: BorderRadius.only(
@@ -24,7 +24,6 @@ class WorkoutTrackerIndoorPage extends StatelessWidget {
               ),
               child: Row(
                 children: [
-                  // back arrow
                   Container(
                     width: 32,
                     height: 32,
@@ -53,7 +52,7 @@ class WorkoutTrackerIndoorPage extends StatelessWidget {
               ),
             ),
 
-            // 2) White container area
+            // White container
             Container(
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -69,14 +68,25 @@ class WorkoutTrackerIndoorPage extends StatelessWidget {
                       children: [
                         _titleSeeMoreRow('Upcoming Workouts'),
                         const SizedBox(height: 10),
-                        _upcomingCard(title: 'Fullbody Workout', subtitle: 'Today, 03:00pm'),
+                        _upcomingCard(
+                          title: 'Fullbody Workout',
+                          subtitle: 'Today, 03:00pm',
+                          onTap: () {
+                            Navigator.pushNamed(context, '/workoutDetails');
+                          },
+                        ),
                         const SizedBox(height: 16),
-                        _upcomingCard(title: 'Upperbody Workout', subtitle: 'June 05, 02:00pm'),
+                        _upcomingCard(
+                          title: 'Upperbody Workout',
+                          subtitle: 'June 05, 02:00pm',
+                          onTap: () {
+                            Navigator.pushNamed(context, '/workoutDetails');
+                          },
+                        ),
                       ],
                     ),
                   ),
-
-                  // "Indoor | Outdoor" toggle + workouts
+                  // "Indoor | Outdoor" toggle
                   Padding(
                     padding: const EdgeInsets.fromLTRB(30, 42, 30, 30),
                     child: Column(
@@ -84,20 +94,32 @@ class WorkoutTrackerIndoorPage extends StatelessWidget {
                       children: [
                         _indoorOutdoorToggle(isIndoor: true, context: context),
                         const SizedBox(height: 16),
-                        CustomCard(title: 'Fullbody workout', subtitle: '11 Exercises | 32min', buttonText: 'View more',
-                            imagePath: 'assets/barbel.jpg',
-                            onButtonPressed: (){}
+                        // Fullbody
+                        CustomCard(
+                          title: 'Fullbody workout',
+                          subtitle: '11 Exercises | 32min',
+                          buttonText: 'View more',
+                          imagePath: 'assets/barbel.jpg',
+                          onButtonPressed: () {
+                            Navigator.pushNamed(context, '/workoutDetails');
+                          },
                         ),
                         const SizedBox(height: 20),
-                        CustomCard(title: 'Lowerbody workout', subtitle: '11 Exercises | 32min', buttonText: 'View more',
-                            imagePath: 'assets/barbel.jpg',
-                            onButtonPressed: (){}
+                        CustomCard(
+                          title: 'Lowerbody workout',
+                          subtitle: '11 Exercises | 32min',
+                          buttonText: 'View more',
+                          imagePath: 'assets/barbel.jpg',
+                          onButtonPressed: () {},
                         ),
                         const SizedBox(height: 20),
-                        CustomCard(title: 'AB workout', subtitle: '11 Exercises | 32min', buttonText: 'View more',
-                            imagePath: 'assets/barbel.jpg',
-                            onButtonPressed: (){}
-                        )
+                        CustomCard(
+                          title: 'AB workout',
+                          subtitle: '11 Exercises | 32min',
+                          buttonText: 'View more',
+                          imagePath: 'assets/barbel.jpg',
+                          onButtonPressed: () {},
+                        ),
                       ],
                     ),
                   ),
@@ -138,106 +160,121 @@ class WorkoutTrackerIndoorPage extends StatelessWidget {
     );
   }
 
-  Widget _upcomingCard({required String title, required String subtitle}) {
-    return Container(
-      width: double.infinity,
-      height: 80,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: const [
-          BoxShadow(
-            color: Color(0x111D1617),
-            blurRadius: 40,
-            offset: Offset(0, 10),
-            spreadRadius: 0,
-          )
-        ],
-      ),
-      child: Row(
-        children: [
-          const SizedBox(width: 15),
-          Opacity(
-            opacity: 0.30,
-            child: Container(
-              width: 50,
-              height: 50,
-              decoration: const BoxDecoration(
-                color: Colors.black,
-                shape: BoxShape.circle,
+  Widget _upcomingCard({
+    required String title,
+    required String subtitle,
+    required VoidCallback onTap,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        width: double.infinity,
+        height: 80,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: const [
+            BoxShadow(
+              color: Color(0x111D1617),
+              blurRadius: 40,
+              offset: Offset(0, 10),
+              spreadRadius: 0,
+            )
+          ],
+        ),
+        child: Row(
+          children: [
+            const SizedBox(width: 15),
+            Opacity(
+              opacity: 0.30,
+              child: Container(
+                width: 50,
+                height: 50,
+                decoration: const BoxDecoration(
+                  color: Colors.black,
+                  shape: BoxShape.circle,
+                ),
               ),
             ),
-          ),
-          const SizedBox(width: 10),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                style: const TextStyle(
-                  color: Color(0xFF1D1517),
-                  fontSize: 12,
-                  fontFamily: 'Poppins',
-                  fontWeight: FontWeight.w500,
-                  height: 1.50,
+            const SizedBox(width: 10),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                    color: Color(0xFF1D1517),
+                    fontSize: 12,
+                    fontFamily: 'Poppins',
+                    fontWeight: FontWeight.w500,
+                    height: 1.50,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                subtitle,
-                style: const TextStyle(
-                  color: Color(0xFFA5A3AF),
-                  fontSize: 10,
-                  fontFamily: 'Poppins',
-                  fontWeight: FontWeight.w400,
-                  height: 1.50,
+                const SizedBox(height: 4),
+                Text(
+                  subtitle,
+                  style: const TextStyle(
+                    color: Color(0xFFA5A3AF),
+                    fontSize: 10,
+                    fontFamily: 'Poppins',
+                    fontWeight: FontWeight.w400,
+                    height: 1.50,
+                  ),
                 ),
-              ),
-            ],
-          ),
-        ],
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
 
-  Widget _indoorOutdoorToggle({required bool isIndoor, required BuildContext context}) {
+  Widget _indoorOutdoorToggle({
+    required bool isIndoor,
+    required BuildContext context,
+  }) {
     return SizedBox(
-        width: 166,
-        child: Row(
-            children: [
-            InkWell(
+      width: 166,
+      child: Row(
+        children: [
+          InkWell(
             onTap: () {
-        // Already on Indoor
-    },
-        child: Text(
-            'Indoor',
-            style: TextStyle(
-            color: isIndoor ? const Color(0xFFCC6DCA) : const Color(0xFF1D1517),fontSize: 16,
-              fontFamily: 'Poppins',
-              fontWeight: isIndoor ? FontWeight.w600 : FontWeight.w300,
-              height: 1.50,
-            ),
-        ),
-            ),
-              const SizedBox(width: 13),
-              InkWell(
-                onTap: () {
-                  Navigator.pushNamed(context, '/workoutOutdoor');
-                },
-                child: Text(
-                  'Outdoor',
-                  style: TextStyle(
-                    color: isIndoor ? const Color(0xFF1D1517) : const Color(0xFFCC6DCA),
-                    fontSize: 16,
-                    fontFamily: 'Poppins',
-                    fontWeight: isIndoor ? FontWeight.w300 : FontWeight.w600,
-                    height: 1.50,
-                  ),
-                ),
+              // Already on Indoor
+            },
+            child: Text(
+              'Indoor',
+              style: TextStyle(
+                color: isIndoor
+                    ? const Color(0xFFCC6DCA)
+                    : const Color(0xFF1D1517),
+                fontSize: 16,
+                fontFamily: 'Poppins',
+                fontWeight: isIndoor ? FontWeight.w600 : FontWeight.w300,
+                height: 1.50,
               ),
-            ],
-        ),
+            ),
+          ),
+          const SizedBox(width: 13),
+          InkWell(
+            onTap: () {
+              Navigator.pushNamed(context, '/workoutOutdoor');
+            },
+            child: Text(
+              'Outdoor',
+              style: TextStyle(
+                color: isIndoor
+                    ? const Color(0xFF1D1517)
+                    : const Color(0xFFCC6DCA),
+                fontSize: 16,
+                fontFamily: 'Poppins',
+                fontWeight: isIndoor ? FontWeight.w300 : FontWeight.w600,
+                height: 1.50,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -1,6 +1,14 @@
+// lib/pages/auth/login_page.dart
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'package:fitup/user_session.dart';
+
+// The same password regex used in register_page1
+final RegExp _passwordRegex =
+    RegExp(r'^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9])[^\s]{8,}$');
+// Basic email check
+final RegExp _emailRegex = RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$');
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -9,11 +17,6 @@ class LoginPage extends StatefulWidget {
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
-
-// Regex from your original code
-final RegExp _passwordRegex =
-    RegExp(r'^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9])[^\s]{8,}$');
-final RegExp _emailRegex = RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$');
 
 class _LoginPageState extends State<LoginPage> {
   final _emailController = TextEditingController();
@@ -30,34 +33,35 @@ class _LoginPageState extends State<LoginPage> {
     }
     if (!_passwordRegex.hasMatch(password)) {
       _showSnackBar(
-        'Password must be >=8 chars, contain uppercase, digit, special char, and no spaces.',
-      );
+          'Password must be >=8 chars, contain uppercase, digit, special char, no spaces.');
       return;
     }
 
     try {
-      final uri = Uri.parse('http://localhost:3000/api/login');
+      final url = Uri.parse('http://localhost:3000/api/login');
       final response = await http.post(
-        uri,
+        url,
         headers: {'Content-Type': 'application/json'},
-        body: json.encode({
-          'email': email,
-          'password': password,
-        }),
+        body: jsonEncode({'email': email, 'password': password}),
       );
+
       if (response.statusCode == 200) {
-        final data = json.decode(response.body);
-        if (data['success'] == true) {
-          // If you had logic for "justRegistered", keep it if you want
-          Navigator.pushNamed(context, '/home');
+        final result = jsonDecode(response.body);
+        if (result['success'] == true) {
+          UserSession.userId = result['userId'];
+          UserSession.fullName = result['fullName'];
+
+          if (LoginPage.justRegistered) {
+            LoginPage.justRegistered = false;
+            Navigator.pushNamed(context, '/success');
+          } else {
+            Navigator.pushNamed(context, '/home');
+          }
         } else {
-          // Maybe an 'error' field
-          _showSnackBar(data['error'] ?? 'Login failed');
+          _showSnackBar('Invalid login - check password');
         }
       } else {
-        // e.g. 401
-        final data = json.decode(response.body);
-        _showSnackBar(data['error'] ?? 'Login failed');
+        _showSnackBar('Server error: ${response.statusCode}');
       }
     } catch (e) {
       _showSnackBar('Server not reachable? $e');
@@ -120,9 +124,9 @@ class _LoginPageState extends State<LoginPage> {
                   decoration: InputDecoration(
                     prefixIcon: const Icon(Icons.lock_outline),
                     suffixIcon: IconButton(
-                      icon: Icon(_obscurePass
-                          ? Icons.visibility_off
-                          : Icons.visibility),
+                      icon: Icon(
+                        _obscurePass ? Icons.visibility_off : Icons.visibility,
+                      ),
                       onPressed: () {
                         setState(() {
                           _obscurePass = !_obscurePass;
@@ -142,8 +146,8 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 10),
 
+                const SizedBox(height: 10),
                 Align(
                   alignment: Alignment.center,
                   child: TextButton(
@@ -230,14 +234,16 @@ class _LoginPageState extends State<LoginPage> {
                 Center(
                   child: GestureDetector(
                     onTap: () {
-                      print('Google sign-in clicked');
+                      // Google sign-in placeholder
                     },
                     child: Container(
                       width: 50,
                       height: 50,
                       decoration: BoxDecoration(
                         border: Border.all(
-                            width: 0.8, color: const Color(0xFFDDD9DA)),
+                          width: 0.8,
+                          color: const Color(0xFFDDD9DA),
+                        ),
                         borderRadius: BorderRadius.circular(14),
                       ),
                       child: Image.asset('assets/Login-Social-Media.jpg'),

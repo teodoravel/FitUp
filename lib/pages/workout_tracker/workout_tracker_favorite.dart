@@ -1,15 +1,93 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:fitup/user_session.dart';
 
-class WorkoutTrackerFavoritePage extends StatelessWidget {
+class WorkoutTrackerFavoritePage extends StatefulWidget {
   const WorkoutTrackerFavoritePage({super.key});
 
   @override
+  State<WorkoutTrackerFavoritePage> createState() =>
+      _WorkoutTrackerFavoritePageState();
+}
+
+class _WorkoutTrackerFavoritePageState
+    extends State<WorkoutTrackerFavoritePage> {
+  bool _notLoggedIn = false;
+  bool _isLoading = false;
+  List<int> _favWorkouts = [];
+  List<int> _favGyms = [];
+  List<int> _favTrainers = [];
+  String? _error;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchFavorites();
+  }
+
+  Future<void> _fetchFavorites() async {
+    if (!UserSession.isLoggedIn) {
+      setState(() => _notLoggedIn = true);
+      return;
+    }
+    setState(() => _isLoading = true);
+    final userId = UserSession.userId!;
+    try {
+      final url = Uri.parse("http://localhost:3000/api/favorites/$userId");
+      final resp = await http.get(url);
+      if (resp.statusCode == 200) {
+        final j = jsonDecode(resp.body);
+        if (j["success"] == true) {
+          final w = j["workouts"] as List<dynamic>;
+          final g = j["gyms"] as List<dynamic>;
+          final t = j["trainers"] as List<dynamic>;
+          setState(() {
+            _favWorkouts = w.map((x) => x as int).toList();
+            _favGyms = g.map((x) => x as int).toList();
+            _favTrainers = t.map((x) => x as int).toList();
+            _isLoading = false;
+          });
+        } else {
+          setState(() {
+            _error = j["error"];
+            _isLoading = false;
+          });
+        }
+      } else {
+        setState(() {
+          _error = "Server error: ${resp.statusCode}";
+          _isLoading = false;
+        });
+      }
+    } catch (e) {
+      setState(() {
+        _error = "Network error: $e";
+        _isLoading = false;
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    if (_notLoggedIn) {
+      return Scaffold(
+        body: SafeArea(
+          child: Center(child: Text("No user logged in")),
+        ),
+      );
+    }
+    if (_isLoading) {
+      return const Scaffold(
+        body: SafeArea(
+          child: Center(child: CircularProgressIndicator()),
+        ),
+      );
+    }
     return Scaffold(
-      body: SingleChildScrollView(
+      body: SafeArea(
         child: Column(
           children: [
-            // 1) Purple top area
             Container(
               padding: const EdgeInsets.only(
                   left: 30, right: 30, top: 40, bottom: 20),
@@ -22,7 +100,6 @@ class WorkoutTrackerFavoritePage extends StatelessWidget {
               ),
               child: Row(
                 children: [
-                  // Box for the back arrow
                   Container(
                     width: 32,
                     height: 32,
@@ -50,180 +127,55 @@ class WorkoutTrackerFavoritePage extends StatelessWidget {
                 ],
               ),
             ),
-
-            // 2) White container with favorites
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(40),
-              ),
-              padding: const EdgeInsets.all(24),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Workouts
-                  _sectionTitle('Workouts'),
-                  const SizedBox(height: 10),
-                  _favoriteCard(
-                    title: 'Fullbody Workout',
-                    subtitle: 'Today, 03:00pm',
-                    onTap: () {
-                      Navigator.pushNamed(context, '/workoutDetails');
-                    },
-                  ),
-                  const SizedBox(height: 12),
-                  _favoriteCard(
-                    title: 'Upperbody Workout',
-                    subtitle: 'June 05, 02:00pm',
-                  ),
-
-                  const SizedBox(height: 24),
-                  // Gyms
-                  _sectionTitle('Gyms'),
-                  const SizedBox(height: 10),
-                  _favoriteCard(
-                      title: 'Gym 1',
-                    onTap: () {
-                      Navigator.pushNamed(context, '/gymMap');
-                    }
-                  ),
-                  const SizedBox(height: 12),
-                  _favoriteCard(
-                      title: 'Gym 2',
-                      onTap: () {
-                        Navigator.pushNamed(context, '/gymMap');
-                      }
-                  ),
-
-                  const SizedBox(height: 24),
-                  // Trainers
-                  _sectionTitle('Trainers'),
-                  const SizedBox(height: 10),
-                  _favoriteCard(
-                    title: 'Trainer 1',
-                    onTap: () {
-                      Navigator.pushNamed(context, '/trainerDetails');
-                    },
-                  ),
-                  const SizedBox(height: 12),
-                  _favoriteCard(
-                    title: 'Trainer 2',
-                    onTap: () {
-                      Navigator.pushNamed(context, '/trainerDetails');
-                    },
-                  ),
-
-                  const SizedBox(height: 40),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  // A re-usable section title row with "See more"
-  Widget _sectionTitle(String text) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          text,
-          style: const TextStyle(
-            color: Color(0xFF1D1517),
-            fontSize: 16,
-            fontFamily: 'Poppins',
-            fontWeight: FontWeight.w600,
-            height: 1.50,
-          ),
-        ),
-        const Text(
-          'See more',
-          style: TextStyle(
-            color: Color(0xFFA5A3AF),
-            fontSize: 12,
-            fontFamily: 'Poppins',
-            fontWeight: FontWeight.w500,
-            height: 1.50,
-          ),
-        ),
-      ],
-    );
-  }
-
-  // Re-usable “favorite” card
-  Widget _favoriteCard({
-    required String title,
-    String subtitle = '',
-    VoidCallback? onTap,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.all(12),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
-          boxShadow: const [
-            BoxShadow(
-              color: Color(0x111D1617),
-              blurRadius: 40,
-              offset: Offset(0, 10),
-              spreadRadius: 0,
-            ),
-          ],
-        ),
-        child: Row(
-          children: [
-            // circle
-            Opacity(
-              opacity: 0.30,
+            Expanded(
               child: Container(
-                width: 50,
-                height: 50,
-                decoration: const BoxDecoration(
-                  color: Colors.black,
-                  shape: BoxShape.circle,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(40),
                 ),
+                child: _error != null
+                    ? Center(child: Text(_error!))
+                    : SingleChildScrollView(
+                        padding: const EdgeInsets.all(24),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text("Workouts",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                )),
+                            const SizedBox(height: 6),
+                            if (_favWorkouts.isEmpty)
+                              const Text("No favorites here"),
+                            ..._favWorkouts
+                                .map((wid) => Text("Workout ID $wid")),
+                            const SizedBox(height: 20),
+                            const Text("Gyms",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                )),
+                            const SizedBox(height: 6),
+                            if (_favGyms.isEmpty)
+                              const Text("No favorites here"),
+                            ..._favGyms.map((gid) => Text("Gym ID $gid")),
+                            const SizedBox(height: 20),
+                            const Text("Trainers",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                )),
+                            const SizedBox(height: 6),
+                            if (_favTrainers.isEmpty)
+                              const Text("No favorites here"),
+                            ..._favTrainers
+                                .map((tid) => Text("Trainer ID $tid")),
+                          ],
+                        ),
+                      ),
               ),
-            ),
-            const SizedBox(width: 12),
-            // Titles
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                    color: Color(0xFF1D1517),
-                    fontSize: 12,
-                    fontFamily: 'Poppins',
-                    fontWeight: FontWeight.w500,
-                    height: 1.50,
-                  ),
-                ),
-                if (subtitle.isNotEmpty) ...[
-                  const SizedBox(height: 4),
-                  Text(
-                    subtitle,
-                    style: const TextStyle(
-                      color: Color(0xFFA5A3AF),
-                      fontSize: 10,
-                      fontFamily: 'Poppins',
-                      fontWeight: FontWeight.w400,
-                      height: 1.50,
-                    ),
-                  ),
-                ],
-              ],
-            ),
-            const Spacer(), // To push the heart icon to the right
-            const Icon(
-              Icons.favorite,
-              color: Colors.red, // Red color for the heart icon
-              size: 20, // Adjust size as needed
             ),
           ],
         ),

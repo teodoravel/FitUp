@@ -1,3 +1,5 @@
+// lib/pages/start/introduction_page.dart
+
 import 'package:flutter/material.dart';
 
 class Introduction extends StatelessWidget {

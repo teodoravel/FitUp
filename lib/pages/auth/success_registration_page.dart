@@ -1,10 +1,14 @@
+// success_registration_page.dart
 import 'package:flutter/material.dart';
+import 'package:fitup/user_session.dart';
 
 class SuccessRegistrationPage extends StatelessWidget {
   const SuccessRegistrationPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final userName = UserSession.fullName ?? "User";
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -14,10 +18,10 @@ class SuccessRegistrationPage extends StatelessWidget {
             child: Column(
               children: [
                 const SizedBox(height: 100),
-                const Text(
-                  'Welcome, Stefani',
+                Text(
+                  'Welcome, $userName',
                   textAlign: TextAlign.center,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Color(0xFF1D1517),
                     fontSize: 20,
                     fontFamily: 'Poppins',
@@ -44,7 +48,7 @@ class SuccessRegistrationPage extends StatelessWidget {
                   height: 60,
                   child: TextButton(
                     style: TextButton.styleFrom(
-                      backgroundColor: Color(0xFF5C315B),
+                      backgroundColor: const Color(0xFF5C315B),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(99),
                       ),

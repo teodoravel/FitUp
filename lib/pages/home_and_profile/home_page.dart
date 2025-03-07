@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:fitup/widgets/custom_card.dart';
+import 'package:fitup/user_session.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -11,13 +12,16 @@ class HomePage extends StatelessWidget {
     final dayName = DateFormat('EEE').format(now).toUpperCase();
     final dayNumber = DateFormat('d').format(now);
 
+    // Use the real user name from user_session
+    final userName = UserSession.fullName ?? "User";
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        title: const Text(
-          'Welcome back, Stefani',
-          style: TextStyle(
+        title: Text(
+          'Welcome back, $userName',
+          style: const TextStyle(
             color: Color(0xFF1D1517),
             fontSize: 18,
             fontFamily: 'Poppins',
@@ -43,7 +47,9 @@ class HomePage extends StatelessWidget {
             _NavIconLabel(
               icon: Icons.home,
               label: 'Home',
-              onTap: () {},
+              onTap: () {
+                // Already on Home
+              },
             ),
             _NavIconLabel(
               icon: Icons.fitness_center,
@@ -236,6 +242,7 @@ class HomePage extends StatelessWidget {
                         const chartH = 140.0;
                         final exH = (ex / maxHours) * chartH;
                         final dgH = (dg / maxHours) * chartH;
+
                         return Padding(
                           padding: const EdgeInsets.only(right: 24),
                           child: Column(
