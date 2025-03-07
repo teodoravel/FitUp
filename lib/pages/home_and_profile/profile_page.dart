@@ -1,10 +1,14 @@
+// lib/pages/home_and_profile/profile_page.dart
 import 'package:flutter/material.dart';
+import 'package:fitup/user_session.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final userName = UserSession.fullName ?? "No name yet";
+
     return Scaffold(
       body: SafeArea(
         child: Container(
@@ -18,7 +22,7 @@ class ProfilePage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Top row
+                // top row
                 Row(
                   children: [
                     IconButton(
@@ -39,10 +43,12 @@ class ProfilePage extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 10),
+
+                // Centered user name
                 Center(
-                  child: const Text(
-                    'Stefani Warren',
-                    style: TextStyle(
+                  child: Text(
+                    userName,
+                    style: const TextStyle(
                       color: Color(0xFF1E1E1E),
                       fontSize: 40,
                       fontFamily: 'Poppins',
@@ -51,6 +57,8 @@ class ProfilePage extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 20),
+
+                // Profile Picture Placeholder
                 Center(
                   child: CircleAvatar(
                     radius: 60,
@@ -63,6 +71,8 @@ class ProfilePage extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 20),
+
+                // Example menu items
                 _menuTile(
                   icon: Icons.fitness_center,
                   title: 'Trainings',
@@ -95,10 +105,12 @@ class ProfilePage extends StatelessWidget {
                   onTap: () {},
                 ),
                 Divider(color: Colors.grey.shade300),
+
                 const Spacer(),
                 Center(
                   child: InkWell(
                     onTap: () {
+                      // Log out
                       Navigator.pushNamed(context, '/login');
                     },
                     child: const Text(
@@ -120,11 +132,8 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
-  Widget _menuTile({
-    required IconData icon,
-    required String title,
-    VoidCallback? onTap,
-  }) {
+  Widget _menuTile(
+      {required IconData icon, required String title, VoidCallback? onTap}) {
     return ListTile(
       leading: Icon(icon),
       title: Text(

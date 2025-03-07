@@ -1,3 +1,5 @@
+// lib/pages/start/start_page.dart
+
 import 'package:flutter/material.dart';
 
 class StartPage extends StatelessWidget {
@@ -12,7 +14,6 @@ class StartPage extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              // Main heading
               const Text(
                 "Get your\nFitness Up!",
                 style: TextStyle(
@@ -24,7 +25,6 @@ class StartPage extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 108),
-              // Subheading
               const Text(
                 "Already have an\naccount?",
                 style: TextStyle(
@@ -35,7 +35,6 @@ class StartPage extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 21),
-              // Log in button
               SizedBox(
                 width: 315,
                 height: 60,
@@ -61,7 +60,6 @@ class StartPage extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 22),
-              // "Or" text
               Row(
                 children: [
                   Expanded(
@@ -76,7 +74,7 @@ class StartPage extends StatelessWidget {
                       "Or",
                       style: TextStyle(
                         fontSize: 14,
-                        fontWeight: FontWeight.w600, // Bolder text
+                        fontWeight: FontWeight.w600,
                         fontFamily: 'Poppins',
                         color: Colors.grey[700],
                       ),
@@ -91,7 +89,6 @@ class StartPage extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 22),
-              // Create account button
               SizedBox(
                 width: 315,
                 height: 60,

@@ -1,4 +1,7 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:fitup/user_session.dart';
 
 class AccountPage extends StatefulWidget {
   const AccountPage({super.key});
@@ -8,21 +11,101 @@ class AccountPage extends StatefulWidget {
 }
 
 class _AccountPageState extends State<AccountPage> {
-  final List<String> _workoutOptions = [
-    '10 min',
-    '30 min',
-    '1h',
-    '1h 30min',
-    '2h',
-    '2h 30min',
-    '3h',
-    '3h 30min',
-    '4h',
-  ];
-  String _selectedWorkout = '1h';
+  String? _name;
+  String? _email;
+  String? _gender;
+  String? _dob; // "YYYY-MM-DD"
+  int? _heightCm;
+  int? _weightKg;
+
+  bool _isLoading = false;
+  bool _notLoggedIn = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchUserDetails();
+  }
+
+  Future<void> _fetchUserDetails() async {
+    if (!UserSession.isLoggedIn) {
+      setState(() => _notLoggedIn = true);
+      return;
+    }
+    setState(() => _isLoading = true);
+
+    final userId = UserSession.userId!;
+    try {
+      final url = Uri.parse('http://localhost:3000/api/userdetails/$userId');
+      final response = await http.get(url);
+      if (response.statusCode == 200) {
+        final result = jsonDecode(response.body);
+        if (result['error'] != null) {
+          setState(() {
+            _notLoggedIn = true;
+            _isLoading = false;
+          });
+        } else {
+          setState(() {
+            _name = result['fullName'] as String?;
+            _email = result['email'] as String?;
+            _gender = result['gender'] as String?;
+            _dob = result['dob'] as String?;
+            _heightCm = result['height_cm'] as int?;
+            _weightKg = result['weight_kg'] as int?;
+            _isLoading = false;
+          });
+        }
+      } else {
+        setState(() => _isLoading = false);
+      }
+    } catch (e) {
+      setState(() => _isLoading = false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    if (_notLoggedIn) {
+      return Scaffold(
+        backgroundColor: Colors.white,
+        body: SafeArea(
+          child: Center(
+            child: Text("No user logged in."),
+          ),
+        ),
+      );
+    }
+    if (_isLoading) {
+      return const Scaffold(
+        backgroundColor: Colors.white,
+        body: SafeArea(
+          child: Center(child: CircularProgressIndicator()),
+        ),
+      );
+    }
+
+    // Compute an Age if you want:
+    String ageString = "Not set";
+    if (_dob != null && _dob!.isNotEmpty) {
+      try {
+        final parsed = DateTime.parse(_dob!);
+        final now = DateTime.now();
+        int age = now.year - parsed.year;
+        final hadBirthday = (now.month > parsed.month) ||
+            (now.month == parsed.month && now.day >= parsed.day);
+        if (!hadBirthday) age--;
+        ageString = "$age";
+      } catch (_) {}
+    }
+
+    final showName = _name ?? "Unknown";
+    final showEmail = _email ?? "Unknown";
+    final showGender = _gender ?? "Unknown";
+    final showHeight = _heightCm ?? 0;
+    final showWeight = _weightKg ?? 0;
+
+    // Example older design with ListTiles:
     return Scaffold(
       body: SafeArea(
         child: Container(
@@ -59,185 +142,86 @@ class _AccountPageState extends State<AccountPage> {
                 ),
                 const SizedBox(height: 10),
                 Divider(color: Colors.grey.shade300),
-                const ListTile(
-                  title: Text(
-                    'Name',
-                    style: TextStyle(
-                      color: Color(0xFF202325),
-                      fontSize: 16,
-                      fontFamily: 'Poppins',
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
+
+                ListTile(
+                  title: const Text('Name'),
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text(
-                        'Stefani Warren',
-                        style: TextStyle(
-                          color: Color(0xFF202325),
-                          fontSize: 16,
-                          fontFamily: 'Poppins',
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                      SizedBox(width: 8),
-                      Icon(Icons.arrow_forward_ios, size: 16),
-                    ],
-                  ),
-                ),
-                Divider(color: Colors.grey.shade300),
-                const ListTile(
-                  title: Text(
-                    'Gender',
-                    style: TextStyle(
-                      color: Color(0xFF202325),
-                      fontSize: 16,
-                      fontFamily: 'Poppins',
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        'Female',
-                        style: TextStyle(
-                          color: Color(0xFF202325),
-                          fontSize: 16,
-                          fontFamily: 'Poppins',
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                      SizedBox(width: 8),
-                      Icon(Icons.arrow_forward_ios, size: 16),
-                    ],
-                  ),
-                ),
-                Divider(color: Colors.grey.shade300),
-                const ListTile(
-                  title: Text(
-                    'Age',
-                    style: TextStyle(
-                      color: Color(0xFF202325),
-                      fontSize: 16,
-                      fontFamily: 'Poppins',
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        '27',
-                        style: TextStyle(
-                          color: Color(0xFF202325),
-                          fontSize: 16,
-                          fontFamily: 'Poppins',
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                      SizedBox(width: 8),
-                      Icon(Icons.arrow_forward_ios, size: 16),
-                    ],
-                  ),
-                ),
-                Divider(color: Colors.grey.shade300),
-                const ListTile(
-                  title: Text(
-                    'Height',
-                    style: TextStyle(
-                      color: Color(0xFF202325),
-                      fontSize: 16,
-                      fontFamily: 'Poppins',
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        '173 cm',
-                        style: TextStyle(
-                          color: Color(0xFF202325),
-                          fontSize: 16,
-                          fontFamily: 'Poppins',
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                      SizedBox(width: 8),
-                      Icon(Icons.arrow_forward_ios, size: 16),
-                    ],
-                  ),
-                ),
-                Divider(color: Colors.grey.shade300),
-                const ListTile(
-                  title: Text(
-                    'Weight',
-                    style: TextStyle(
-                      color: Color(0xFF202325),
-                      fontSize: 16,
-                      fontFamily: 'Poppins',
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        '53 kg',
-                        style: TextStyle(
-                          color: Color(0xFF202325),
-                          fontSize: 16,
-                          fontFamily: 'Poppins',
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                      SizedBox(width: 8),
-                      Icon(Icons.arrow_forward_ios, size: 16),
+                      Text(showName),
+                      const SizedBox(width: 8),
+                      const Icon(Icons.arrow_forward_ios, size: 16),
                     ],
                   ),
                 ),
                 Divider(color: Colors.grey.shade300),
 
-                // The updated "Work out goal" dropdown
                 ListTile(
-                  title: const Text(
-                    'Work out goal',
-                    style: TextStyle(
-                      color: Color(0xFF202325),
-                      fontSize: 16,
-                      fontFamily: 'Poppins',
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                  trailing: DropdownButtonHideUnderline(
-                    child: DropdownButton<String>(
-                      value: _selectedWorkout,
-                      items: _workoutOptions.map((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(
-                            value,
-                            style: const TextStyle(
-                              color: Color(0xFF202325),
-                              fontSize: 16,
-                              fontFamily: 'Poppins',
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                        );
-                      }).toList(),
-                      onChanged: (newVal) {
-                        setState(() {
-                          _selectedWorkout = newVal!;
-                        });
-                      },
-                      icon: const Icon(Icons.arrow_forward_ios, size: 16),
-                    ),
+                  title: const Text('Email'),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(showEmail),
+                      const SizedBox(width: 8),
+                      const Icon(Icons.arrow_forward_ios, size: 16),
+                    ],
                   ),
                 ),
                 Divider(color: Colors.grey.shade300),
+
+                ListTile(
+                  title: const Text('Gender'),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(showGender),
+                      const SizedBox(width: 8),
+                      const Icon(Icons.arrow_forward_ios, size: 16),
+                    ],
+                  ),
+                ),
+                Divider(color: Colors.grey.shade300),
+
+                ListTile(
+                  title: const Text('Age'),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(ageString),
+                      const SizedBox(width: 8),
+                      const Icon(Icons.arrow_forward_ios, size: 16),
+                    ],
+                  ),
+                ),
+                Divider(color: Colors.grey.shade300),
+
+                ListTile(
+                  title: const Text('Height'),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text("$showHeight cm"),
+                      const SizedBox(width: 8),
+                      const Icon(Icons.arrow_forward_ios, size: 16),
+                    ],
+                  ),
+                ),
+                Divider(color: Colors.grey.shade300),
+
+                ListTile(
+                  title: const Text('Weight'),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text("$showWeight kg"),
+                      const SizedBox(width: 8),
+                      const Icon(Icons.arrow_forward_ios, size: 16),
+                    ],
+                  ),
+                ),
+                Divider(color: Colors.grey.shade300),
+
+                // etc. The rest of your design...
               ],
             ),
           ),

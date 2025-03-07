@@ -1,5 +1,8 @@
+// lib/pages/add_workout_schedule.dart
+
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:intl/intl.dart';
 
 class AddWorkoutSchedulePage extends StatefulWidget {
   const AddWorkoutSchedulePage({super.key});
@@ -11,7 +14,6 @@ class AddWorkoutSchedulePage extends StatefulWidget {
 class _AddWorkoutSchedulePageState extends State<AddWorkoutSchedulePage> {
   DateTime _selectedTime = DateTime.now();
 
-  // Dropdown options:
   final List<String> _workoutOptions = [
     'Fullbody Workout',
     'Upperbody Workout',
@@ -23,16 +25,41 @@ class _AddWorkoutSchedulePageState extends State<AddWorkoutSchedulePage> {
     'Advanced',
   ];
 
-  // Selected values for the dropdowns:
   String _selectedWorkout = 'Upperbody Workout';
   String _selectedDifficulty = 'Beginner';
-
-  // For Custom Repetitions text field:
-  // ignore: unused_field
   String _customReps = '';
+  DateTime? _passedDate;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final args =
+        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+    if (args != null) {
+      final d = args['selectedDate'] as DateTime?;
+      if (d != null) {
+        _passedDate = d;
+      }
+      final w = args['workoutName'] as String?;
+      if (w != null && _workoutOptions.contains(w)) {
+        _selectedWorkout = w;
+      }
+      final diff = args['difficulty'] as String?;
+      if (diff != null && _difficultyOptions.contains(diff)) {
+        _selectedDifficulty = diff;
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    String displayDate = '';
+    if (_passedDate != null) {
+      displayDate = DateFormat('EEE, dd MMM yyyy').format(_passedDate!);
+    } else {
+      displayDate = 'No date chosen';
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Add Schedule'),
@@ -52,9 +79,10 @@ class _AddWorkoutSchedulePageState extends State<AddWorkoutSchedulePage> {
           padding: const EdgeInsets.all(20),
           child: Column(
             children: [
-              const Text(
-                'Thu, 27 May 2025',
-                style: TextStyle(
+              // date
+              Text(
+                displayDate,
+                style: const TextStyle(
                   color: Color(0xFFB6B4C1),
                   fontSize: 14,
                 ),
@@ -104,9 +132,9 @@ class _AddWorkoutSchedulePageState extends State<AddWorkoutSchedulePage> {
                 ),
               ),
               const SizedBox(height: 10),
-              _detailItem('Choose Workout', 'Upperbody Workout'),
+              _detailItem('Choose Workout', _selectedWorkout),
               const SizedBox(height: 10),
-              _detailItem('Difficulty', 'Beginner'),
+              _detailItem('Difficulty', _selectedDifficulty),
               const SizedBox(height: 10),
               _detailItem('Custom Repetitions', ''),
 
@@ -124,6 +152,7 @@ class _AddWorkoutSchedulePageState extends State<AddWorkoutSchedulePage> {
                     ),
                   ),
                   onPressed: () {
+                    // In real usage, save or do a POST to the server
                     Navigator.pop(context);
                   },
                   child: const Text(
@@ -145,8 +174,7 @@ class _AddWorkoutSchedulePageState extends State<AddWorkoutSchedulePage> {
     );
   }
 
-  Widget _detailItem(String title, String value) {
-    // We will conditionally build different widgets based on the 'title'.
+  Widget _detailItem(String title, String currentValue) {
     if (title == 'Choose Workout') {
       return Container(
         height: 50,
@@ -170,7 +198,7 @@ class _AddWorkoutSchedulePageState extends State<AddWorkoutSchedulePage> {
             const Spacer(),
             DropdownButton<String>(
               value: _selectedWorkout,
-              underline: const SizedBox(), // Remove default underline
+              underline: const SizedBox(),
               items: _workoutOptions.map((option) {
                 return DropdownMenuItem(
                   value: option,
@@ -290,7 +318,7 @@ class _AddWorkoutSchedulePageState extends State<AddWorkoutSchedulePage> {
         ),
       );
     } else {
-      // Default: for any other title not specified above
+      // default
       return Container(
         height: 50,
         decoration: BoxDecoration(
@@ -312,7 +340,7 @@ class _AddWorkoutSchedulePageState extends State<AddWorkoutSchedulePage> {
             ),
             const Spacer(),
             Text(
-              value,
+              currentValue,
               style: const TextStyle(
                 color: Color(0xFFA5A3AF),
                 fontSize: 10,
