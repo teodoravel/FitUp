@@ -2,9 +2,52 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:fitup/widgets/custom_card.dart';
 import 'package:fitup/user_session.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  List<Map<String, dynamic>> _upcomingWorkouts = [];
+  bool _isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchUpcomingWorkouts();
+  }
+
+  Future<void> _fetchUpcomingWorkouts() async {
+    if (!UserSession.isLoggedIn) return;
+
+    setState(() => _isLoading = true);
+    final userId = UserSession.userId!;
+
+    try {
+      final url =
+          Uri.parse('http://localhost:3000/api/upcoming-workouts/$userId');
+      final response = await http.get(url);
+
+      if (response.statusCode == 200) {
+        final result = jsonDecode(response.body);
+        if (result['success'] == true) {
+          setState(() {
+            _upcomingWorkouts =
+                List<Map<String, dynamic>>.from(result['workouts']);
+          });
+        }
+      }
+    } catch (e) {
+      // Handle error silently for now
+    } finally {
+      setState(() => _isLoading = false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -126,7 +169,7 @@ class HomePage extends StatelessWidget {
                   const SizedBox(width: 12),
                   const Expanded(
                     child: Text(
-                      '“The body achieves what the mind believes.” — Napoleon Hill',
+                      '"The body achieves what the mind believes." — Napoleon Hill',
                       style: TextStyle(
                         color: Color(0xFF5C315B),
                         fontSize: 16,
@@ -138,21 +181,9 @@ class HomePage extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 20),
-              const Text(
-                'Stats this week',
-                style: TextStyle(
-                  color: Color(0xFF1D1517),
-                  fontSize: 16,
-                  fontFamily: 'Poppins',
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              const SizedBox(height: 16),
-              _buildTwoBarChart(),
               const SizedBox(height: 30),
               const Text(
-                'Today’s workout',
+                'Upcoming Workouts',
                 style: TextStyle(
                   color: Color(0xFFCC6DCA),
                   fontSize: 16,
@@ -161,35 +192,42 @@ class HomePage extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 12),
-              CustomCard(
-                title: 'Fullbody Workout',
-                subtitle: '11 Exercises | 32 minutes',
-                buttonText: 'View more',
-                imagePath: 'assets/barbel.jpg',
-                onButtonPressed: () {
-                  Navigator.pushNamed(context, '/workoutDetails');
-                },
-              ),
-              const SizedBox(height: 30),
-              const Text(
-                'Recommended Gym',
-                style: TextStyle(
-                  color: Color(0xFF1D1517),
-                  fontSize: 16,
-                  fontFamily: 'Poppins',
-                  fontWeight: FontWeight.w600,
+              if (_isLoading)
+                const Center(child: CircularProgressIndicator())
+              else if (_upcomingWorkouts.isEmpty)
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[100],
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: const Text(
+                    'No upcoming workouts scheduled',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.grey,
+                      fontSize: 14,
+                      fontFamily: 'Poppins',
+                    ),
+                  ),
+                )
+              else
+                Column(
+                  children: _upcomingWorkouts.map((workout) {
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 12),
+                      child: _buildUpcomingWorkoutCard(
+                        workoutName:
+                            workout['workout_name'] ?? 'Unknown Workout',
+                        difficulty: workout['difficulty'] ?? 'Beginner',
+                        startTime: workout['start_time'] ?? '00:00',
+                        endTime: workout['end_time'] ?? '00:00',
+                        date: workout['scheduled_date'] ?? '',
+                      ),
+                    );
+                  }).toList(),
                 ),
-              ),
-              const SizedBox(height: 12),
-              CustomCard(
-                title: 'Gym 1',
-                subtitle: 'Location',
-                buttonText: 'See on map',
-                imagePath: 'assets/barbel.jpg',
-                onButtonPressed: () {
-                  Navigator.pushNamed(context, '/gymMap');
-                },
-              ),
             ],
           ),
         ),
@@ -197,117 +235,74 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildTwoBarChart() {
-    final days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-    final exerciseDose = [2.5, 2.0, 2.3, 1.0, 0.5, 2.0, 0.3];
-    final dailyGoal = [2.5, 2.5, 2.5, 2.0, 2.0, 2.5, 1.5];
-    const maxHours = 2.5;
-    final yLabels = [
-      '2.5 h',
-      '2 h',
-      '1.5 h',
-      '1 h',
-      '30 min',
-      '10 min',
-      '0 min'
-    ];
-
-    return SizedBox(
-      height: 220,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+  Widget _buildUpcomingWorkoutCard({
+    required String workoutName,
+    required String difficulty,
+    required String startTime,
+    required String endTime,
+    required String date,
+  }) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: const [
+          BoxShadow(
+            color: Color(0x111D1617),
+            blurRadius: 40,
+            offset: Offset(0, 10),
+            spreadRadius: 0,
+          )
+        ],
+      ),
+      child: Row(
         children: [
+          Container(
+            width: 50,
+            height: 50,
+            decoration: BoxDecoration(
+              color: const Color(0xFF5C315B).withOpacity(0.1),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: const Icon(
+              Icons.fitness_center,
+              color: Color(0xFF5C315B),
+              size: 24,
+            ),
+          ),
+          const SizedBox(width: 16),
           Expanded(
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(
-                  width: 40,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: yLabels.map((label) {
-                      return Text(label, style: const TextStyle(fontSize: 12));
-                    }).toList(),
+                Text(
+                  '$workoutName - $difficulty',
+                  style: const TextStyle(
+                    color: Color(0xFF1D1517),
+                    fontSize: 14,
+                    fontFamily: 'Poppins',
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: List.generate(days.length, (index) {
-                        final ex = exerciseDose[index];
-                        final dg = dailyGoal[index];
-                        const chartH = 140.0;
-                        final exH = (ex / maxHours) * chartH;
-                        final dgH = (dg / maxHours) * chartH;
-
-                        return Padding(
-                          padding: const EdgeInsets.only(right: 24),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  Container(
-                                    width: 10,
-                                    height: exH,
-                                    decoration: BoxDecoration(
-                                      color: const Color(0xFF9552A0),
-                                      borderRadius: BorderRadius.circular(4),
-                                    ),
-                                  ),
-                                  const SizedBox(width: 6),
-                                  Container(
-                                    width: 10,
-                                    height: dgH,
-                                    decoration: BoxDecoration(
-                                      color: const Color(0xFFF8EAFB),
-                                      borderRadius: BorderRadius.circular(4),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 8),
-                              Text(days[index],
-                                  style: const TextStyle(fontSize: 12)),
-                            ],
-                          ),
-                        );
-                      }),
-                    ),
+                const SizedBox(height: 4),
+                Text(
+                  '$date • $startTime - $endTime',
+                  style: const TextStyle(
+                    color: Color(0xFFA5A3AF),
+                    fontSize: 12,
+                    fontFamily: 'Poppins',
+                    fontWeight: FontWeight.w400,
                   ),
                 ),
               ],
             ),
           ),
-          const SizedBox(height: 10),
-          Row(
-            children: [
-              Container(
-                width: 12,
-                height: 12,
-                decoration: const BoxDecoration(
-                  color: Color(0xFF9552A0),
-                  shape: BoxShape.circle,
-                ),
-              ),
-              const SizedBox(width: 6),
-              const Text('Exercise dose', style: TextStyle(fontSize: 12)),
-              const SizedBox(width: 20),
-              Container(
-                width: 12,
-                height: 12,
-                decoration: const BoxDecoration(
-                  color: Color(0xFFF8EAFB),
-                  shape: BoxShape.circle,
-                ),
-              ),
-              const SizedBox(width: 6),
-              const Text('Daily Goal', style: TextStyle(fontSize: 12)),
-            ],
+          const Icon(
+            Icons.arrow_forward_ios,
+            color: Color(0xFFA5A3AF),
+            size: 16,
           ),
         ],
       ),

@@ -1,8 +1,9 @@
-// lib/pages/add_workout_schedule.dart
-
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:fitup/user_session.dart';
 
 class AddWorkoutSchedulePage extends StatefulWidget {
   const AddWorkoutSchedulePage({super.key});
@@ -29,6 +30,7 @@ class _AddWorkoutSchedulePageState extends State<AddWorkoutSchedulePage> {
   String _selectedDifficulty = 'Beginner';
   String _customReps = '';
   DateTime? _passedDate;
+  bool _isLoading = false;
 
   @override
   void didChangeDependencies() {
@@ -48,6 +50,65 @@ class _AddWorkoutSchedulePageState extends State<AddWorkoutSchedulePage> {
       if (diff != null && _difficultyOptions.contains(diff)) {
         _selectedDifficulty = diff;
       }
+    }
+  }
+
+  Future<void> _saveWorkoutSchedule() async {
+    if (!UserSession.isLoggedIn) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Please log in first")),
+      );
+      return;
+    }
+
+    if (_passedDate == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Please select a date")),
+      );
+      return;
+    }
+
+    setState(() => _isLoading = true);
+
+    try {
+      final userId = UserSession.userId!;
+      final url = Uri.parse('http://localhost:3000/api/schedule-workout');
+
+      final response = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          'userId': userId,
+          'workoutName': _selectedWorkout,
+          'difficulty': _selectedDifficulty,
+          'scheduledDate': DateFormat('yyyy-MM-dd').format(_passedDate!),
+          'startTime': DateFormat('HH:mm:ss').format(_selectedTime),
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        final result = jsonDecode(response.body);
+        if (result['success'] == true) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Workout scheduled successfully!")),
+          );
+          Navigator.pop(context);
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("Error: ${result['error']}")),
+          );
+        }
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Server error: ${response.statusCode}")),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Network error: $e")),
+      );
+    } finally {
+      setState(() => _isLoading = false);
     }
   }
 
@@ -151,19 +212,18 @@ class _AddWorkoutSchedulePageState extends State<AddWorkoutSchedulePage> {
                       borderRadius: BorderRadius.circular(99),
                     ),
                   ),
-                  onPressed: () {
-                    // In real usage, save or do a POST to the server
-                    Navigator.pop(context);
-                  },
-                  child: const Text(
-                    'Save',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontFamily: 'Poppins',
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
+                  onPressed: _isLoading ? null : _saveWorkoutSchedule,
+                  child: _isLoading
+                      ? const CircularProgressIndicator(color: Colors.white)
+                      : const Text(
+                          'Save',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontFamily: 'Poppins',
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
                 ),
               ),
               const SizedBox(height: 50),

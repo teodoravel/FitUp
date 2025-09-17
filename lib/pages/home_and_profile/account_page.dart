@@ -220,8 +220,6 @@ class _AccountPageState extends State<AccountPage> {
                   ),
                 ),
                 Divider(color: Colors.grey.shade300),
-
-                // etc. The rest of your design...
               ],
             ),
           ),

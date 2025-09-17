@@ -1,9 +1,8 @@
-// lib/pages/gyms/gym_list_page.dart
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import 'package:fitup/user_session.dart'; // for UserSession.userId
+import 'package:fitup/user_session.dart';
 import '../gyms/gym_map_page.dart';
 import '../gyms/trainer_details_page.dart';
 
@@ -16,8 +15,8 @@ class GymListPage extends StatefulWidget {
 
 class _GymListPageState extends State<GymListPage> {
   bool _isLoading = false;
-  // If you want to fetch gyms/trainers from server, you can store them here.
-  // For now we’ll show the “old design” static placeholders + hearts.
+  Map<String, bool> _gymFavorites = {};
+  Map<String, bool> _trainerFavorites = {};
 
   // Example: default local lists
   final List<Map<String, dynamic>> _gymsNearYou = [
@@ -36,7 +35,57 @@ class _GymListPageState extends State<GymListPage> {
     {"id": 2, "name": "Trainer 2", "rating": 4.0},
   ];
 
-  Future<void> _addFavoriteGym(int gymId) async {
+  @override
+  void initState() {
+    super.initState();
+    _loadFavoriteStatuses();
+  }
+
+  Future<void> _loadFavoriteStatuses() async {
+    final userId = UserSession.userId;
+    if (userId == null) return;
+
+    try {
+      // Check gym favorites
+      for (var gym in _allGyms) {
+        final gymId = gym["id"] as int;
+        final url = Uri.parse(
+            'http://localhost:3000/api/favorites/check/$userId/gym/$gymId');
+        final response = await http.get(url);
+
+        if (response.statusCode == 200) {
+          final result = jsonDecode(response.body);
+          if (result['success'] == true) {
+            setState(() {
+              _gymFavorites['gym_$gymId'] = result['isFavorite'] ?? false;
+            });
+          }
+        }
+      }
+
+      // Check trainer favorites
+      for (var trainer in _trainers) {
+        final trainerId = trainer["id"] as int;
+        final url = Uri.parse(
+            'http://localhost:3000/api/favorites/check/$userId/trainer/$trainerId');
+        final response = await http.get(url);
+
+        if (response.statusCode == 200) {
+          final result = jsonDecode(response.body);
+          if (result['success'] == true) {
+            setState(() {
+              _trainerFavorites['trainer_$trainerId'] =
+                  result['isFavorite'] ?? false;
+            });
+          }
+        }
+      }
+    } catch (e) {
+      // Handle error silently
+    }
+  }
+
+  Future<void> _toggleGymFavorite(int gymId) async {
     final userId = UserSession.userId;
     if (userId == null) {
       _showSnackBar("Please log in first");
@@ -44,20 +93,25 @@ class _GymListPageState extends State<GymListPage> {
     }
     setState(() => _isLoading = true);
     try {
-      final url = Uri.parse('http://localhost:3000/api/favorites');
+      final url = Uri.parse('http://localhost:3000/api/favorites/toggle');
       final response = await http.post(
         url,
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
-          "user_id": userId,
-          "favorite_type": "gym",
-          "favorite_id": gymId,
+          "userId": userId,
+          "favoriteType": "gym",
+          "favoriteId": gymId,
         }),
       );
       if (response.statusCode == 200) {
         final result = jsonDecode(response.body);
         if (result["success"] == true) {
-          _showSnackBar("Gym added to favorites!");
+          setState(() {
+            _gymFavorites['gym_$gymId'] = result['isFavorite'] ?? false;
+          });
+          _showSnackBar(result['action'] == 'added'
+              ? "Gym added to favorites!"
+              : "Gym removed from favorites!");
         } else {
           _showSnackBar("Server error: ${result['error'] ?? 'unknown'}");
         }
@@ -71,7 +125,7 @@ class _GymListPageState extends State<GymListPage> {
     }
   }
 
-  Future<void> _addFavoriteTrainer(int trainerId) async {
+  Future<void> _toggleTrainerFavorite(int trainerId) async {
     final userId = UserSession.userId;
     if (userId == null) {
       _showSnackBar("Please log in first");
@@ -79,20 +133,26 @@ class _GymListPageState extends State<GymListPage> {
     }
     setState(() => _isLoading = true);
     try {
-      final url = Uri.parse('http://localhost:3000/api/favorites');
+      final url = Uri.parse('http://localhost:3000/api/favorites/toggle');
       final response = await http.post(
         url,
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
-          "user_id": userId,
-          "favorite_type": "trainer",
-          "favorite_id": trainerId,
+          "userId": userId,
+          "favoriteType": "trainer",
+          "favoriteId": trainerId,
         }),
       );
       if (response.statusCode == 200) {
         final result = jsonDecode(response.body);
         if (result["success"] == true) {
-          _showSnackBar("Trainer added to favorites!");
+          setState(() {
+            _trainerFavorites['trainer_$trainerId'] =
+                result['isFavorite'] ?? false;
+          });
+          _showSnackBar(result['action'] == 'added'
+              ? "Trainer added to favorites!"
+              : "Trainer removed from favorites!");
         } else {
           _showSnackBar("Server error: ${result['error'] ?? 'unknown'}");
         }
@@ -118,7 +178,6 @@ class _GymListPageState extends State<GymListPage> {
           : SingleChildScrollView(
               child: Column(
                 children: [
-                  // Purple top area
                   Container(
                     padding: const EdgeInsets.only(
                         left: 30, right: 30, top: 40, bottom: 20),
@@ -234,6 +293,233 @@ class _GymListPageState extends State<GymListPage> {
     );
   }
 
+  Widget _customGymCard({
+    required int gymId,
+    required String gymName,
+    required String location,
+  }) {
+    final isFavorite = _gymFavorites['gym_$gymId'] ?? false;
+
+    return Container(
+      width: double.infinity,
+      height: 132,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        color: const Color(0xFF5C315B).withOpacity(0.20),
+      ),
+      child: Stack(
+        children: [
+          Positioned(
+            left: 20,
+            top: 20,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  gymName,
+                  style: const TextStyle(
+                    color: Color(0xFF1D1517),
+                    fontSize: 14,
+                    fontFamily: 'Poppins',
+                    fontWeight: FontWeight.w500,
+                    height: 1.50,
+                  ),
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  location,
+                  style: const TextStyle(
+                    color: Color(0xFF6B6B6B),
+                    fontSize: 12,
+                    fontFamily: 'Poppins',
+                    fontWeight: FontWeight.w400,
+                    height: 1.50,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Positioned(
+            right: 20,
+            top: 20,
+            child: Opacity(
+              opacity: 0.50,
+              child: Container(
+                width: 60,
+                height: 60,
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  shape: BoxShape.circle,
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            left: 20,
+            bottom: 15,
+            child: GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const GymMapPage()),
+                );
+              },
+              child: Container(
+                width: 94,
+                height: 35,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(50),
+                ),
+                alignment: Alignment.center,
+                child: const Text(
+                  "See on map",
+                  style: TextStyle(
+                    color: Color(0xFF5C315B),
+                    fontSize: 10,
+                    fontFamily: 'Poppins',
+                    fontWeight: FontWeight.w500,
+                    height: 1.50,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            right: 20,
+            bottom: 15,
+            child: GestureDetector(
+              onTap: () => _toggleGymFavorite(gymId),
+              child: Icon(
+                isFavorite ? Icons.favorite : Icons.favorite_border,
+                color: isFavorite ? Colors.red : Colors.grey,
+                size: 24,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _customTrainerCard({
+    required int trainerId,
+    required String trainerName,
+    required double rating,
+  }) {
+    final isFavorite = _trainerFavorites['trainer_$trainerId'] ?? false;
+
+    return Container(
+      width: double.infinity,
+      height: 132,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        color: const Color(0xFF5C315B).withOpacity(0.20),
+      ),
+      child: Stack(
+        children: [
+          Positioned(
+            left: 20,
+            top: 20,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  trainerName,
+                  style: const TextStyle(
+                    color: Color(0xFF1D1517),
+                    fontSize: 14,
+                    fontFamily: 'Poppins',
+                    fontWeight: FontWeight.w500,
+                    height: 1.50,
+                  ),
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  "$rating ☆",
+                  style: const TextStyle(
+                    color: Color(0xFF6B6B6B),
+                    fontSize: 12,
+                    fontFamily: 'Poppins',
+                    fontWeight: FontWeight.w400,
+                    height: 1.50,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Positioned(
+            right: 20,
+            top: 20,
+            child: Opacity(
+              opacity: 0.50,
+              child: Container(
+                width: 60,
+                height: 60,
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  shape: BoxShape.circle,
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            left: 20,
+            bottom: 15,
+            child: GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const TrainerDetailsPage(),
+                    settings: RouteSettings(
+                      arguments: {
+                        'trainerId': trainerId,
+                        'trainerName': trainerName,
+                      },
+                    ),
+                  ),
+                );
+              },
+              child: Container(
+                width: 94,
+                height: 35,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(50),
+                ),
+                alignment: Alignment.center,
+                child: const Text(
+                  "Contact",
+                  style: TextStyle(
+                    color: Color(0xFF5C315B),
+                    fontSize: 10,
+                    fontFamily: 'Poppins',
+                    fontWeight: FontWeight.w500,
+                    height: 1.50,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            right: 20,
+            bottom: 15,
+            child: GestureDetector(
+              onTap: () => _toggleTrainerFavorite(trainerId),
+              child: Icon(
+                isFavorite ? Icons.favorite : Icons.favorite_border,
+                color: isFavorite ? Colors.red : Colors.grey,
+                size: 24,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ... existing helper methods ...
   Widget _titleSeeMoreRow(String title) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -328,232 +614,6 @@ class _GymListPageState extends State<GymListPage> {
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _customGymCard({
-    required int gymId,
-    required String gymName,
-    required String location,
-  }) {
-    return Container(
-      width: double.infinity,
-      height: 132,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        color: const Color(0xFF5C315B).withOpacity(0.20),
-      ),
-      child: Stack(
-        children: [
-          // Title + Subtitle
-          Positioned(
-            left: 20,
-            top: 20,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  gymName,
-                  style: const TextStyle(
-                    color: Color(0xFF1D1517),
-                    fontSize: 14,
-                    fontFamily: 'Poppins',
-                    fontWeight: FontWeight.w500,
-                    height: 1.50,
-                  ),
-                ),
-                const SizedBox(height: 6),
-                Text(
-                  location,
-                  style: const TextStyle(
-                    color: Color(0xFF6B6B6B),
-                    fontSize: 12,
-                    fontFamily: 'Poppins',
-                    fontWeight: FontWeight.w400,
-                    height: 1.50,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          // White circle on right
-          Positioned(
-            right: 20,
-            top: 20,
-            child: Opacity(
-              opacity: 0.50,
-              child: Container(
-                width: 60,
-                height: 60,
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  shape: BoxShape.circle,
-                ),
-              ),
-            ),
-          ),
-          // "See on map" button
-          Positioned(
-            left: 20,
-            bottom: 15,
-            child: GestureDetector(
-              onTap: () {
-                // Navigate to gymMap with e.g. arguments
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => const GymMapPage()),
-                );
-              },
-              child: Container(
-                width: 94,
-                height: 35,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(50),
-                ),
-                alignment: Alignment.center,
-                child: const Text(
-                  "See on map",
-                  style: TextStyle(
-                    color: Color(0xFF5C315B),
-                    fontSize: 10,
-                    fontFamily: 'Poppins',
-                    fontWeight: FontWeight.w500,
-                    height: 1.50,
-                  ),
-                ),
-              ),
-            ),
-          ),
-          // Heart icon at top right corner
-          Positioned(
-            right: 20,
-            bottom: 15,
-            child: GestureDetector(
-              onTap: () {
-                _addFavoriteGym(gymId);
-              },
-              child: const Icon(
-                Icons.favorite_border,
-                color: Colors.red,
-                size: 24,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _customTrainerCard({
-    required int trainerId,
-    required String trainerName,
-    required double rating,
-  }) {
-    return Container(
-      width: double.infinity,
-      height: 132,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        color: const Color(0xFF5C315B).withOpacity(0.20),
-      ),
-      child: Stack(
-        children: [
-          Positioned(
-            left: 20,
-            top: 20,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  trainerName,
-                  style: const TextStyle(
-                    color: Color(0xFF1D1517),
-                    fontSize: 14,
-                    fontFamily: 'Poppins',
-                    fontWeight: FontWeight.w500,
-                    height: 1.50,
-                  ),
-                ),
-                const SizedBox(height: 6),
-                Text(
-                  "$rating ☆",
-                  style: const TextStyle(
-                    color: Color(0xFF6B6B6B),
-                    fontSize: 12,
-                    fontFamily: 'Poppins',
-                    fontWeight: FontWeight.w400,
-                    height: 1.50,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Positioned(
-            right: 20,
-            top: 20,
-            child: Opacity(
-              opacity: 0.50,
-              child: Container(
-                width: 60,
-                height: 60,
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  shape: BoxShape.circle,
-                ),
-              ),
-            ),
-          ),
-          // "Contact" button
-          Positioned(
-            left: 20,
-            bottom: 15,
-            child: GestureDetector(
-              onTap: () {
-                // push to trainer details
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => const TrainerDetailsPage()),
-                );
-              },
-              child: Container(
-                width: 94,
-                height: 35,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(50),
-                ),
-                alignment: Alignment.center,
-                child: const Text(
-                  "Contact",
-                  style: TextStyle(
-                    color: Color(0xFF5C315B),
-                    fontSize: 10,
-                    fontFamily: 'Poppins',
-                    fontWeight: FontWeight.w500,
-                    height: 1.50,
-                  ),
-                ),
-              ),
-            ),
-          ),
-          // Heart to favorite trainer
-          Positioned(
-            right: 20,
-            bottom: 15,
-            child: GestureDetector(
-              onTap: () {
-                _addFavoriteTrainer(trainerId);
-              },
-              child: const Icon(
-                Icons.favorite_border,
-                color: Colors.red,
-                size: 24,
-              ),
-            ),
-          ),
-        ],
       ),
     );
   }

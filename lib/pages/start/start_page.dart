@@ -1,5 +1,3 @@
-// lib/pages/start/start_page.dart
-
 import 'package:flutter/material.dart';
 
 class StartPage extends StatelessWidget {
@@ -24,7 +22,13 @@ class StartPage extends StatelessWidget {
                 ),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 108),
+              const SizedBox(height: 40),
+              Image.asset(
+                "assets/Saly-34.png",
+                width: 246,
+                height: 331,
+              ),
+              const SizedBox(height: 40),
               const Text(
                 "Already have an\naccount?",
                 style: TextStyle(
@@ -59,42 +63,14 @@ class StartPage extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(height: 22),
-              Row(
-                children: [
-                  Expanded(
-                    child: Container(
-                      height: 1,
-                      color: Colors.grey[400],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Text(
-                      "Or",
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        fontFamily: 'Poppins',
-                        color: Colors.grey[700],
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: Container(
-                      height: 1,
-                      color: Colors.grey[400],
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 22),
+              const SizedBox(height: 21),
               SizedBox(
                 width: 315,
                 height: 60,
                 child: TextButton(
                   style: TextButton.styleFrom(
-                    backgroundColor: const Color(0xFF9552A1),
+                    backgroundColor: Colors.transparent,
+                    side: const BorderSide(color: Color(0xFF9552A1), width: 2),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(99),
                     ),
@@ -103,9 +79,9 @@ class StartPage extends StatelessWidget {
                     Navigator.pushNamed(context, '/register1');
                   },
                   child: const Text(
-                    'Create account',
+                    'Register',
                     style: TextStyle(
-                      color: Colors.white,
+                      color: Color(0xFF9552A1),
                       fontSize: 16,
                       fontFamily: 'Poppins',
                       fontWeight: FontWeight.w700,
