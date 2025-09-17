@@ -2,8 +2,6 @@
 
 Flutter фитнес апликација по предметот Мобилни Информациски Системи  
 
-**Теодора Велјаноска 223075 и Ана Саздова 225121**  
-
 [GitHub Repository](https://github.com/teodoravel/FitUp)  
 [Figma Design](https://www.figma.com/design/9LcjcsWq0fhzrLrWeRvk3f/FitUp?node-id=0-1&p=f)  
 
